@@ -1,0 +1,16 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:NewSalesProject.Controls"
+    xmlns:wpf="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:views="clr-namespace:NewSalesProject.Views"
+    xmlns:control="clr-namespace:NewSalesProject.Controls"
+    xmlns:local="clr-namespace:NewSalesProject">
+
+
+
+
+
+
+
+</ResourceDictionary>

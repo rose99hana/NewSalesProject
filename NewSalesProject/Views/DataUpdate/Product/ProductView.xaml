@@ -1,0 +1,309 @@
+﻿<UserControl x:Class="NewSalesProject.Views.ProductView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NewSalesProject.Views"
+             xmlns:controls="clr-namespace:NewSalesProject.Controls"
+             xmlns:converters="clr-namespace:NewSalesProject.Converters"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             Background="Transparent"
+             d:DesignHeight="500" d:DesignWidth="900">
+    <Grid>
+        <Grid  Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:MyDataList 
+            x:Name="DtGrid"
+            Title="Product's List"
+            ItemsSource="{Binding ViewItems}" 
+            SelectedItem="{Binding SelectedItem}"
+            SelectedIndex="{Binding SelectedIndex}"
+            SearchProperty="{Binding SearchProperty}"
+            SearchKeyWord ="{Binding SearchKeyword}"
+            FilterCommand="{Binding CRUDCommand}"
+            ClearFilterCommand="{Binding CRUDCommand}"
+            RefreshCommand="{Binding CRUDCommand}" 
+            AddCommand="{Binding CRUDCommand}"
+            DeleteCommand="{Binding CRUDCommand}"
+            DuplicateItemCommand="{Binding CRUDCommand}"
+            UpdateDetailsCommand="{Binding CRUDCommand}"
+            IsAutoUpdateEnable="{Binding IsAutoUpdateEnable}"
+            DataGridState="{Binding DataGridState}"
+            IsFiltered="{Binding IsFiltered}"
+            DataGridSpinnerState="{Binding DataGridSpinnerState}"/>
+
+            <GridSplitter Background="Gray" HorizontalAlignment="Stretch" Width="3" Margin="0 2" Grid.Column="1"/>
+
+            <DockPanel Grid.Column="2" Margin="2">
+                <Grid DockPanel.Dock="Top">
+                    <controls:DetailsHeaderBar x:Name="HeaderBar" HeaderText="Selected Product: " Text="{Binding InEditItem.Name}"/>
+                </Grid>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Name="View1" Grid.ColumnSpan="3">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.Resources>
+                                <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                    <Setter Property="GroupName" Value="Feature11"/> <!--Value of this GroupName must be unique and difference to otherview, to prevent BUG when change view-->
+                                </Style>
+                            </DockPanel.Resources>
+
+                            <Button Name="AddInvoiceButton1" Command="{Binding GoodsReceiptVM.CRUDCommand}" CommandParameter="CreateNew" Click="AddInvoiceButton_Click" DockPanel.Dock="Right" Padding="2" Margin="2 2 0 4">
+                                <materialDesign:PackIcon Kind="Add" Foreground="White" Width="30" Height="auto"/>
+                            </Button>
+                            <RadioButton Visibility="Collapsed" Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="2 2 0 4" Background="#ff66b3" Name="ReceiptInvoiceButton1">
+                                <TextBlock Text="Invoice"/>
+                            </RadioButton>
+                            <!--<RadioButton Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="ReceiptsListButton1">
+                                <TextBlock Text="Receipts List"/>
+                            </RadioButton>-->
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Name="DetailsButton1">
+                                    <TextBlock Text="Details"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Name="PriceListButton1">
+                                    <TextBlock Text="Price List"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Visibility="Collapsed" Unchecked="NewToggleRadioButton_Unchecked" Name="NewButton1">
+                                    <TextBlock Text="New"/>
+                                </RadioButton>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <ContentControl Style="{StaticResource TabViewContentStyle1}" Name="ViewsContent1"/>
+                    </DockPanel>
+
+
+                    <GridSplitter Visibility="{Binding ElementName=View2, Path=Visibility}" Background="BurlyWood" HorizontalAlignment="Stretch" Width="3" Margin="2 0" Grid.Column="1"/>
+
+
+                    <DockPanel Name="View2" Grid.Column="2" Visibility="Collapsed">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.Resources>
+                                <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                    <Setter Property="GroupName" Value="Feature2"/>
+                                </Style>
+                            </DockPanel.Resources>
+
+                            <Button Name="AddInvoiceButton2" Command="{Binding GoodsReceiptVM.CRUDCommand}" CommandParameter="CreateNew" Click="AddInvoiceButton_Click" DockPanel.Dock="Right" Padding="2" Margin="2 2 0 4">
+                                <materialDesign:PackIcon Kind="Add" Foreground="White" Width="30" Height="auto"/>
+                            </Button>
+                            <RadioButton Visibility="Collapsed" Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="2 2 0 4" Background="#ff66b3" Name="ReceiptInvoiceButton2">
+                                <TextBlock Text="Invoice"/>
+                            </RadioButton>
+                            <!--<RadioButton Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="ReceiptsListButton2">
+                                <TextBlock Text="Receipts List"/>
+                            </RadioButton>-->
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                        <Setter Property="GroupName" Value="Feature2"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <RadioButton Checked="MenuToggleRadioButton2_Checked" Name="DetailsButton2">
+                                    <TextBlock Text="Details"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton2_Checked" Name="PriceListButton2">
+                                    <TextBlock Text="Price List"/>
+                                </RadioButton>
+                            </StackPanel>
+
+                        </DockPanel>
+                       
+                        <ContentControl Style="{StaticResource TabViewContentStyle2}" Name="ViewsContent2"/>
+                    </DockPanel>
+                </Grid>
+                <!--<Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+
+
+
+                    <DockPanel Name="View1" Grid.ColumnSpan="3">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignToggleRadioButton}">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Margin" Value="0 2 4 4"/>
+                                    <Setter Property="Tag" Value="MenuToggleButton"/>
+                                    <Setter Property="GroupName" Value="Feature"/>
+                                </Style>
+                            </DockPanel.Resources>
+                            <Button Click="VisibleReceiptsViewButton_Click" DockPanel.Dock="Right" Padding="2" Margin="2 2 0 4">
+                                <materialDesign:PackIcon Kind="Add" Foreground="White" Width="30" Height="auto"/>
+                            </Button>
+                            <RadioButton DockPanel.Dock="Right" Margin="2 2 2 4" Background="#ff66b3" Name="GoodReceiptButton1">
+                                <TextBlock Text="Receipts"/>
+                            </RadioButton>
+                            <RadioButton DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="ReceiptsListToggleRadioButton">
+                                <TextBlock Text="Receipts List"/>
+                            </RadioButton>
+
+                            <StackPanel Orientation="Horizontal">
+
+                                <RadioButton IsChecked="True" Name="DetailsToggleRadioButton">
+                                    <TextBlock Text="Details"/>
+                                </RadioButton>
+
+                                <RadioButton  Name="PriceListRadioButton">
+                                    <TextBlock Text="Price List"/>
+                                </RadioButton>
+
+                                <RadioButton Visibility="Collapsed" Name="AddReceiptToggleRadioButton">
+                                    <TextBlock Text="Add Receipt"/>
+                                </RadioButton>
+
+                                <RadioButton Visibility="Collapsed" Unchecked="NewToggleRadioButton_Unchecked" Name="NewToggleRadioButton">
+                                    <TextBlock Text="New"/>
+                                </RadioButton>
+                            </StackPanel>
+
+                        </DockPanel>
+
+                        <ContentControl Name="ViewsContent">
+                            <ContentControl.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ElementName=NewToggleRadioButton, Path=IsChecked}" Value="False"/>
+                                                <Condition Binding="{Binding InEditItem}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="ContentControl.IsEnabled" Value="False"/>
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=GoodReceiptButton1, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.IsEnabled" Value="True"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding ElementName=DetailsToggleRadioButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:EditView IsAdditionalDataVisible="{Binding ElementName=DtGrid, Path=SelectedItem, Converter={x:Static converters:NullToBooleanConverter.Instance}}" BindingItem="{Binding InEditItem}">
+                                                        <local:ProductDetailContent/>
+                                                    </local:EditView>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=PriceListRadioButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:PriceListView/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=NewToggleRadioButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:NewView BindingItem="{Binding NewItem}">
+                                                        <local:ProductDetailContent/>
+                                                    </local:NewView>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=AddReceiptToggleRadioButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:AddReceiptView/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=GoodReceiptToggleRadioButton, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:ReceiptInvoiceView/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </DockPanel>
+
+
+
+
+
+                    <GridSplitter Visibility="{Binding ElementName=View2, Path=Visibility}" Background="BurlyWood" HorizontalAlignment="Stretch" Width="3" Margin="2 0" Grid.Column="1"/>
+
+
+
+
+                    <DockPanel Name="View2" Grid.Column="2" Visibility="Collapsed">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignToggleRadioButton}">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Margin" Value="0 2 4 4"/>
+                                    <Setter Property="Tag" Value="MenuToggleButton"/>
+                                    <Setter Property="GroupName" Value="Feature2"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <RadioButton IsChecked="True" Name="Details2">
+                                <TextBlock Text="Details"/>
+                            </RadioButton>
+
+                            <RadioButton Name="Orders2">
+                                <TextBlock Text="Orders"/>
+                            </RadioButton>
+
+                        </StackPanel>
+
+                        <ContentControl>
+                            <ContentControl.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding InEditItem}" Value="{x:Null}">
+                                            <Setter Property="ContentControl.IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=Details2, Path=IsChecked}" Value="True">
+                                            <Setter Property="ContentControl.Content">
+                                                <Setter.Value>
+                                                    <local:EditView BindingItem="{Binding InEditItem}">
+                                                        <local:StoreDetailContent/>
+                                                    </local:EditView>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ElementName=Orders2, Path=IsChecked}" Value="True">
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </DockPanel>
+                </Grid>-->
+            </DockPanel>
+        </Grid>
+
+        <controls:CRUDStateCard CRUDType="{Binding CRUDType}" CardState="{Binding CRUDState}"/>
+    </Grid>
+</UserControl>

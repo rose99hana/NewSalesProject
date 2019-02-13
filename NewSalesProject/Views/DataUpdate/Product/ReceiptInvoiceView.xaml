@@ -1,0 +1,1167 @@
+﻿<UserControl x:Class="NewSalesProject.Views.ReceiptInvoiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:NewSalesProject.Controls"
+             xmlns:wpfTool="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:converters="clr-namespace:NewSalesProject.Converters"
+             xmlns:support="clr-namespace:NewSalesProject.Supports"
+             xmlns:global="clr-namespace:NewSalesProject"
+             xmlns:local="clr-namespace:NewSalesProject.Views"
+             xmlns:behaviors="clr-namespace:NewSalesProject.Behavior"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <UserControl.Resources>
+        <DataTemplate x:Key="InvoiceDtGridRowDetailTemplate">
+            <Border DockPanel.Dock="Bottom" Background="#99e6ff" BorderThickness="0 1 0 0" Padding="2 0 2 2">
+                <Border.BorderBrush>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Rectangle StrokeDashArray="4 2" Stroke="DarkGray" StrokeThickness="1"
+                                              Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualWidth}"
+                                              Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Border}}, Path=ActualHeight}"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Border.BorderBrush>
+                <Border.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="2"/>
+                        <Setter Property="Padding" Value="2"/>
+                        <Setter Property="FontFamily" Value="Candara"/>
+                        <Setter Property="Foreground" Value="DarkBlue"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="FontStyle" Value="Italic"/>
+                    </Style>
+                </Border.Resources>
+                <ContentControl>
+                    <DockPanel>
+                        <Grid Margin="2 0" DockPanel.Dock="Right">
+                            <Grid.Resources>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Margin="4 0">
+                                <TextBlock Text="Coupon(1 Unit): "/>
+                                <Grid>
+                                    <controls:NumberTextbox OriginText="{Binding Coupon}" Currency="{Binding CurrencySymbol}"
+                                            Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" 
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}" 
+                                                   Visibility="{Binding IsEditable, Converter={StaticResource ReverseBoolean2VisibilityConverter}}" 
+                                                   Text="{Binding Coupon, StringFormat={}{0:C}}"/>
+                                </Grid>
+                            </DockPanel>
+                            <DockPanel  Margin="4 0" Grid.Row="1">
+                                <TextBlock Text="Discount: "/>
+                                <Grid>
+                                    <controls:NumberTextbox OriginText="{Binding Discount}" Currency="%"
+                                            Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    <TextBlock Visibility="{Binding IsEditable, Converter={StaticResource ReverseBoolean2VisibilityConverter}}" 
+                                               VerticalAlignment="Center" Margin="2" HorizontalAlignment="Right" Text="{Binding Discount, StringFormat={}{0:N1}%}"/>
+                                </Grid>
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="1">
+                                <TextBlock Text="Amount : "/>
+                                <TextBlock Margin="2" 
+                                    behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}" 
+                                    Text="{Binding CouponAmount, StringFormat={}{0:C}}"/>
+
+                            </DockPanel>
+                            <DockPanel Grid.Column="1" Grid.Row="1">
+                                <TextBlock Text="Amount: "/>
+                                <TextBlock Margin="2" 
+                                    behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}" 
+                                    Text="{Binding DiscountAmount, StringFormat={}{0:C}}"/>
+                            </DockPanel>
+
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2" Grid.RowSpan="2" Orientation="Horizontal">
+                                <Button Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                        Margin="2" Background="#99e6ff" Style="{StaticResource ImageButton}" 
+                                        CommandParameter="Save"
+                                        Command="{Binding DataContext.ReceiptDetailVM.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                    <Image Source="/NewSalesProject;component/Images/Save.png"/>
+                                </Button>
+                                <Button Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Margin="2" Background="#99e6ff" Style="{StaticResource ImageButton}"
+                                        CommandParameter="CancelEdit"
+                                        Command="{Binding DataContext.ReceiptDetailVM.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                    <Image Source="/NewSalesProject;component/Images/Cancel.png"/>
+                                </Button>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center" IsHitTestVisible="{Binding IsEditable}" IsChecked="{Binding IsTaxIncluding, UpdateSourceTrigger=PropertyChanged}" Margin="2" Padding="2" Content="Price Including Tax"/>
+
+
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top">
+                                <DockPanel HorizontalAlignment="Left">
+                                    <TextBlock Text="Product Code: "/>
+                                    <TextBlock Text="{Binding Product.Code}" TextDecorations="Underline"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </DockPanel>
+                    </DockPanel>
+                </ContentControl>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    
+    <Grid Background="White">
+        <materialDesign:DialogHost Style="{StaticResource CustomMaterialDesignEmbeddedDialogHost}" DialogMargin="8">
+            <materialDesign:DialogHost.DialogContent>
+                <DockPanel Margin="16">
+                    <StackPanel DockPanel.Dock="Top">
+                        <Label FontSize="15" Content="New Invoice Detail" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+                    <DockPanel Background="Beige" DockPanel.Dock="Top">
+                        <Border HorizontalAlignment="Left" BorderBrush="Orange" BorderThickness="2" Height="102" Width ="102" Margin="4">
+                            <Grid>
+                                <Image Source="/NewSalesProject;component/Images/NoImage.jpeg">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=BindingImage, Path=Source}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+                                <Image Name="BindingImage" Source="{Binding SelectedItem.Picture, IsAsync=True}"/>
+                            </Grid>
+                        </Border>
+
+                        <Grid Margin="4">
+                            <TextBlock Text="{Binding SelectedItem.Name}" FontSize="20" VerticalAlignment="Center" Margin="0 4 4 4"/>
+                        </Grid>
+                    </DockPanel>
+                    <Grid DataContext="{Binding ReceiptDetailVM}">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                            <Style TargetType="{x:Type controls:CurrencyTextbox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="TextAlignment" Value="Right"/>
+                            </Style>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DefaultComboBox}">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="Padding" Value="2"/>
+                            </Style>
+                        </Grid.Resources>
+                        <StackPanel Margin="0 10">
+                            <CheckBox IsChecked="{Binding NewItem.IsTaxIncluding}">
+                                <TextBlock Text="Price Included Tax"/>
+                            </CheckBox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Purchased Price"/>
+                                <controls:CurrencyTextbox Grid.Column="1" Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.Price}"/>
+
+                                <TextBlock Grid.Column="3" Text="Quantity"/>
+                                <wpfTool:IntegerUpDown Grid.Column="4" Minimum="1" Margin="2" Text="{Binding NewItem.Quantity}"/>
+
+                                <TextBlock Grid.Row="1" Text="Discount Percent"/>
+                                <controls:CurrencyTextbox Grid.Column="1" Grid.Row="1" Currency="%" OriginText="{Binding NewItem.Discount}"/>
+
+                                <TextBlock Text="Coupon (1 Unit)" Grid.Row="1" Grid.Column="3"/>
+                                <controls:CurrencyTextbox Grid.Column="4" Grid.Row="1" Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.Coupon}"/>
+                            </Grid>
+
+                            <CheckBox Margin="0 30 0 10" Content="Add this price information to Price List" IsChecked="{Binding NewItem.AddNewToPriceList}"/>
+                        </StackPanel>
+
+
+                        <Grid VerticalAlignment="Bottom">
+                            <Button Name="AddButton" Click="AddButton_Click" Command="{Binding CRUDCommand}" CommandParameter="Add"
+                                Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right">
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <materialDesign:PackIcon VerticalAlignment="Center" Height="20" Width="20" Kind="Add"/>
+                                    <TextBlock Text="ADD"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    Command="materialDesign:DialogHost.CloseDialogCommand"
+                                    HorizontalAlignment="Left">
+                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                    <materialDesign:PackIcon VerticalAlignment="Center" Height="18" Width="18" Kind="Cancel"/>
+                                    <TextBlock Text="CANCEL"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </DockPanel>
+                <!--<StackPanel Margin="16">
+                    <TextBlock>Add a new animal.</TextBlock>
+                    <TextBox Margin="0 8 0 0" HorizontalAlignment="Stretch" x:Name="AnimalTextBox"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsDefault="True"
+                                        Margin="0 8 8 0"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                            ACCEPT
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        IsCancel="True"
+                                        Margin="0 8 8 0"
+                                        Command="materialDesign:DialogHost.CloseDialogCommand">
+                            CANCEL
+                        </Button>
+                    </StackPanel>
+                </StackPanel>-->
+            </materialDesign:DialogHost.DialogContent>
+            
+            <DockPanel>
+                <Grid DockPanel.Dock="Top" Background="LightSkyBlue">
+                    <TextBlock TextElement.FontWeight="Bold" HorizontalAlignment="Center" Text="NEW RECEIPT INVOICE" Margin="4"/>
+                </Grid>
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.ColumnSpan="2">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="2"/>
+                                </Style>
+                                <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                    <Setter Property="Background" Value="#cceeff"/>
+                                    <Setter Property="Margin" Value="2"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Margin="10 2">
+                                <TextBlock Text="Receipt Code"/>
+                                <TextBox IsEnabled="False" Text="{Binding GoodsReceiptVM.NewItem.InvoiceCode}"/>
+                            </DockPanel>
+
+                            <DockPanel Grid.Column="1" Margin="10 2">
+                                <TextBlock Text="Receipt Date"/>
+                                <DatePicker Background="#cceeff" Margin="2" BorderThickness="0" SelectedDate="{Binding GoodsReceiptVM.NewItem.CreatedDate}"/>
+                            </DockPanel>
+                        </Grid>
+
+                        <GroupBox Grid.Row="1" Margin="2 0" BorderThickness="2" Header="Option" BorderBrush="#ffccee" Style="{StaticResource DefaultGroupBox}">
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontWeight="Bold" Margin="2 0"/>
+                                </DataTemplate>
+                            </GroupBox.HeaderTemplate>
+                            <Grid Margin="4 2" DataContext="{Binding GoodsReceiptVM}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Width" Value="90"/>
+                                    </Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                        <Setter Property="Background" Value="#cceeff"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Margin" Value="2"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type controls:CurrencyTextbox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                        <Setter Property="Background" Value="#cceeff"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="TextAlignment" Value="Right"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <StackPanel Margin="4 2">
+                                    <DockPanel>
+                                        <TextBlock Text="Input Currency"/>
+                                        <ComboBox Name="CurrencyCbb" ItemsSource="{x:Static support:DataAccess.CurrencyCodeList}" Padding="2 4"
+                                            SelectedItem="{Binding NewItem.CurrencySymbol, Converter={x:Static converters:CurrencyToSymbolConverter.Instance}}"
+                                            Background="#cceeff" BorderThickness="0" Margin="2" MinWidth="30"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Tax Rate"/>
+                                        <controls:CurrencyTextbox Currency="%" OriginText="{Binding NewItem.TaxRate}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Exchange Rate"/>
+                                        <controls:CurrencyTextbox Currency="₫" OriginText="{Binding NewItem.ExchangeRate}"/>
+                                    </DockPanel>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="4 2">
+                                    <DockPanel>
+                                        <TextBlock Text="Shipping Fee"/>
+                                        <controls:CurrencyTextbox Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.ShippingFee}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Additional Fee"/>
+                                        <controls:CurrencyTextbox Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.AdditionalFees}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <TextBlock Text="Discount (Invoice)"/>
+                                        <controls:CurrencyTextbox Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.DiscountOnReceipt}"/>
+                                    </DockPanel>
+                                </StackPanel>
+
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox DataContext="{Binding GoodsReceiptVM}" Style="{StaticResource DefaultGroupBox}" Margin="2 0" BorderThickness="2" Header="Invoice Overview" BorderBrush="#ffccee"  Grid.Column="2" Grid.Row="1">
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontWeight="Bold" Foreground="OrangeRed" Margin="2 0"/>
+                                </DataTemplate>
+                            </GroupBox.HeaderTemplate>
+                            <Grid Margin="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <DockPanel>
+                                    <TextBlock FontWeight="DemiBold" Foreground="ForestGreen" Text="Sub Total: "/>
+                                    <TextBlock Text="{Binding NewItem.SubTotal, StringFormat={}{0:C}}" 
+                                               TextAlignment="Right" FontWeight="DemiBold" Foreground="ForestGreen"
+                                        behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding NewItem.CurrencySymbol}" />
+                                </DockPanel>
+                                <DockPanel Grid.Row="1">
+                                    <TextBlock Text="Discount (Invoice):   "/>
+                                    <TextBlock Text="{Binding NewItem.DiscountOnReceipt, StringFormat={}{0:C}}" TextAlignment="Right"
+                                        behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding NewItem.CurrencySymbol}" />
+                                </DockPanel>
+                                <DockPanel Grid.Row="2">
+                                    <TextBlock Text="Total Fee: "/>
+                                    <TextBlock Text="{Binding NewItem.TotalFee, StringFormat={}{0:C}}" TextAlignment="Right"
+                                        behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding NewItem.CurrencySymbol}" />
+                                </DockPanel>
+                                <DockPanel Grid.Row="3">
+                                    <TextBlock TextDecorations="Underline" Text="Total: " FontSize="14" FontWeight="Bold" Foreground="OrangeRed"/>
+                                    <TextBlock Text="{Binding NewItem.Total, StringFormat={}{0:C}}" TextAlignment="Right"
+                                               FontSize="14" FontWeight="Bold" Foreground="OrangeRed"
+                                        behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding NewItem.CurrencySymbol}" />
+                                </DockPanel>
+                            </Grid>
+                        </GroupBox>
+
+                        <DockPanel Grid.Row="2" Grid.ColumnSpan="2">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                <Button Name="OpenDialogButton" Click="OpenDialogButton_Click" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="CreateNew" Margin="4 2" Padding="4" Background="#ffccff" BorderBrush="Orchid">
+                                    <materialDesign:PackIcon Kind="Add" Height="24" Width="24" Foreground="DarkOrchid"/>
+                                </Button>
+                                <Button Margin="4 2" Style="{StaticResource ImageButton}" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Refresh">
+                                    <Image Source="/NewSalesProject;component/Images/Refresh.png"/>
+                                </Button>
+                                <Button Name="EditButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Edit">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+                                            <Setter Property="IsEnabled" Value="{Binding ReceiptDetailVM.SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem}" Value="{x:Null}">
+                                                    <Setter Property="Button.IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Image Source="/NewSalesProject;component/Images/Edit.ico"/>
+                                </Button>
+                                <Button Name="DeleteButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Delete">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+                                            <Setter Property="IsEnabled" Value="{Binding ReceiptDetailVM.SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem}" Value="{x:Null}">
+                                                    <Setter Property="Button.IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Image Source="/NewSalesProject;component/Images/NewDelete.ico"/>
+                                </Button>
+                                <Button Name="DeleteAllButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="DeleteAll">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+                                            <Setter Property="IsEnabled" Value="{Binding ElementName=InvoiceDtGrid, Path=ItemsSource.Count}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem.IsEditable}" Value="True">
+                                                    <Setter Property="Button.IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    <Image Source="/NewSalesProject;component/Images/DeleteAll.ico"/>
+                                </Button>
+                            </StackPanel>
+
+                            <DockPanel>
+                                <TextBlock Margin="2" Text="Purchased In Store: " VerticalAlignment="Center"/>
+                                <ComboBox DisplayMemberPath="Name" Background="#cceeff" Margin="4 0 10 0" IsEditable="True"
+                                          SelectedItem="{Binding GoodsReceiptVM.NewItem.Store}"
+                                          ItemsSource="{x:Static support:DataAccess.Stores}"/>
+                            </DockPanel>
+
+                        </DockPanel>
+                    </Grid>
+
+                    <Grid DockPanel.Dock="Bottom">
+                        <Button Command="{Binding GoodsReceiptVM.CRUDCommand}" CommandParameter="Add" Padding="20 2" Margin="10 4" HorizontalAlignment="Right" Foreground="White">
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <materialDesign:PackIcon Margin="0 0 4 0" VerticalAlignment="Center" Kind="Plus"/>
+                                <TextBlock Text="Add"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Click="CancelButton_Click" Command="{Binding GoodsReceiptVM.CRUDCommand}" CommandParameter="CancelCreateNew" Name="CancelButton" Padding="10 2" Margin="10 4" HorizontalAlignment="Left" Foreground="White">
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                <materialDesign:PackIcon Margin="0 0 4 0" VerticalAlignment="Center" Kind="Cancel"/>
+                                <TextBlock Text="Cancel"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+
+                    <Grid Margin="0 2 0 0" DockPanel.Dock="Top">
+                        <DataGrid DockPanel.Dock="Top" 
+                              AutoGenerateColumns="False"
+                              RowDetailsTemplate="{StaticResource InvoiceDtGridRowDetailTemplate}"
+                              Name="InvoiceDtGrid"
+                              CanUserAddRows="False"
+                              GridLinesVisibility="None"
+                              ItemsSource="{Binding ReceiptDetailVM.ViewItems}"
+                              SelectedItem="{Binding ReceiptDetailVM.SelectedItem}"
+                              SelectionChanged="InvoiceDtGrid_SelectionChanged"
+                              ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
+                              CellStyle="{DynamicResource DataGridCellStyle1}" 
+                              Style="{DynamicResource DataGridStyle1}" 
+                              RowStyle="{DynamicResource DataGridRowStyle1}">
+                            <DataGrid.Columns>
+
+                                <!--Product Name-->
+                                <DataGridTemplateColumn SortMemberPath=".Product.Name" Width="*">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Margin="4 2" TextAlignment="Left" Text="Product Name"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Product.Name}" Margin="4 0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--Price-->
+                                <DataGridTemplateColumn SortMemberPath=".Price" Width="80">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Price" Margin="4 2" TextAlignment="Right"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <controls:NumberTextbox OriginText="{Binding Price}" Currency="{Binding CurrencySymbol}"
+                                                    Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                <TextBlock Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2" 
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}" 
+                                                   Visibility="{Binding IsEditable, Converter={StaticResource ReverseBoolean2VisibilityConverter}}" 
+                                                   Text="{Binding Price, StringFormat={}{0:C}}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+
+                                <!--Qty-->
+                                <DataGridTemplateColumn SortMemberPath=".Discount" Width="60">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Qty" Margin="4 2" TextAlignment="Center"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <controls:NumberTextbox OriginText="{Binding Quantity}" Currency="number"
+                                                    Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                                <TextBlock Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4 8" 
+                                                   Visibility="{Binding IsEditable, Converter={StaticResource ReverseBoolean2VisibilityConverter}}" 
+                                                   Text="{Binding Quantity}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--Sub Total-->
+                                <DataGridTemplateColumn SortMemberPath=".ExchangeRealPrice" Width="60">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Sub Total" Margin="4 2" TextAlignment="Right"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Foreground="DimGray" Margin="2" HorizontalAlignment="Right" 
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}"
+                                                   Text="{Binding SubTotal, StringFormat={}{0:C}}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+
+                                <!--Total Discount-->
+                                <DataGridTemplateColumn SortMemberPath=".ExchangeRealPrice" Width="60">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Discount" Margin="4 2" TextAlignment="Center"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Foreground="DimGray" Margin="2" HorizontalAlignment="Center" 
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}"
+                                                   Text="{Binding TotalDiscount, StringFormat={}{0:C}}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--Tax-->
+                                <DataGridTemplateColumn Width="50">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Tax" Margin="4 2" TextAlignment="Center"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <Grid>
+                                                    <TextBlock Foreground="DimGray" Visibility="{Binding IsTaxIncluding, Converter={StaticResource ReverseBoolean2VisibilityConverter}}" VerticalAlignment="Center" Margin="2" HorizontalAlignment="Center" Text="{Binding Tax, StringFormat={}{0:N1}%}"/>
+                                                    <TextBlock Foreground="DimGray" Text="*" Visibility="{Binding IsTaxIncluding, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" Margin="2" HorizontalAlignment="Center"/>
+                                                </Grid>
+                                                <TextBlock Text="{Binding TaxAmount, StringFormat={}{0:C0}}"
+                                                           Visibility="{Binding IsTaxIncluding, Converter={StaticResource ReverseBoolean2VisibilityConverter}}"
+                                                           behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}"
+                                                    FontSize="10" Foreground="DimGray" FontStyle="Italic" Margin="2 0 2 2" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                
+                                
+                                <!--Total-->
+                                <DataGridTemplateColumn SortMemberPath=".ExchangeRealPrice" Width="60">
+                                    <DataGridTemplateColumn.Header>
+                                        <Border>
+                                            <TextBlock Text="Total" Margin="4 2" TextAlignment="Right"/>
+                                        </Border>
+                                    </DataGridTemplateColumn.Header>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock FontSize="10" Foreground="DimGray" Margin="2" HorizontalAlignment="Right" 
+                                                   Visibility="{Binding IsTaxIncluding, Converter={StaticResource ReverseBoolean2VisibilityConverter}}"
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}"
+                                                   Text="{Binding Total, StringFormat={}{0:C}}"/>
+                                                <TextBlock FontSize="13" FontStyle="Italic" FontWeight="DemiBold" Foreground="ForestGreen" Margin="2 0 2 2" HorizontalAlignment="Right" 
+                                                   behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding CurrencySymbol}"
+                                                   Text="{Binding TaxIncTotal, StringFormat={}{0:C}}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+
+                        <controls:CRUDStateCard VerticalAlignment="Bottom" Margin="0 10" CRUDType="{Binding ReceiptDetailVM.CRUDType}" CardState="{Binding ReceiptDetailVM.CRUDState}"/>
+
+
+                        <controls:MySpinner x:Name="Spinner" 
+                                BackgroundOpacity="0.6"
+                                SpinnerState="{Binding DataContext.ReceiptDetailVM.DataGridSpinnerState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                StateMode="{Binding DataContext.ReceiptDetailVM.DataGridState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+
+                    </Grid>
+
+
+                    <!--<Grid Margin="0 4">
+                        <ScrollViewer>
+                            <StackPanel>
+                                <Grid DockPanel.Dock="Top">
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Right"/>
+                                            <Setter Property="Margin" Value="4 2"/>
+                                            <Setter Property="FontWeight" Value="DemiBold"/>
+                                        </Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Padding" Value="0 2"/>
+                                            <Setter Property="Background" Value="LightSkyBlue"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border>
+                                        <TextBlock TextAlignment="Center" Text="Delete"/>
+                                    </Border>
+                                    <Border>
+                                        <TextBlock TextAlignment="Center" Text="No."/>
+                                    </Border>
+                                    <Border Grid.Column="1">
+                                        <TextBlock TextAlignment="Center" Text="Product Name"/>
+                                    </Border>
+                                    <Border Grid.Column="2">
+                                        <TextBlock Text="Qty" TextAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="3">
+                                        <TextBlock Text="Price" TextAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="4">
+                                        <TextBlock Text="Tax" TextAlignment="Center"/>
+                                    </Border>
+                                    <Border Grid.Column="5">
+                                        <TextBlock Text="Discount"/>
+                                    </Border>
+                                    <Border Grid.Column="6">
+                                        <TextBlock Text="Real Price"/>
+                                    </Border>
+
+                                </Grid>
+
+                                <StackPanel Margin="0 2 0 0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="70"/>
+                                            <ColumnDefinition Width="50"/>
+                                            <ColumnDefinition Width="60"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="4 2"/>
+                                            </Style>
+                                            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                                <Setter Property="Margin" Value="4 2"/>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <Grid>
+                                            <TextBlock Text="1" VerticalAlignment="Center"/>
+                                        </Grid>
+                                        <Grid MinHeight="40" Grid.Column="1">
+                                            <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Text="Amazon.co.jp"/>
+                                        </Grid>
+                                        <StackPanel Grid.Column="2">
+                                            --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                            <controls:NumberTextbox IsCurrencyVisible="False"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="3">
+                                            --><!--<TextBlock TextAlignment="Right" Text="280¥"/>--><!--
+                                            <controls:NumberTextbox/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4">
+                                            --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                            <controls:NumberTextbox IsTaxIncluding="{Binding}" IsEnabled="False" IsPercentSymbolVisible="True" IsCurrencyVisible="False"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="5">
+                                            --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                            <controls:NumberTextbox IsEnabled="False"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="6">
+                                            --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                            <controls:NumberTextbox IsEnabled="False"/>
+                                        </StackPanel>
+                                        --><!--<TextBlock VerticalAlignment="Top" TextAlignment="Right" Grid.Column="5" Text="20"/>
+                                    <TextBlock VerticalAlignment="Top" TextAlignment="Right" Grid.Column="6" Text="238¥"/>--><!--
+                                    </Grid>
+                                    <Separator Background="LightGray"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <DockPanel>
+                                            <Grid Width="50" Height="50">
+
+                                            </Grid>
+                                            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="150" Text="sgegergerge ergerg eg ergerg "/>
+                                            <CheckBox DockPanel.Dock="Bottom">
+                                                <TextBlock Text="Price Included Tax"/>
+                                            </CheckBox>
+                                        </DockPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Price(Before )" FontStyle="Italic"/>
+                                            <TextBlock Text="24000" HorizontalAlignment="Center" FontStyle="Italic"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                                            <Button Style="{StaticResource ImageButton}">
+                                                <Image Source="/NewSalesProject;component/Images/Edit.ico"/>
+                                            </Button>
+                                            <Button Style="{StaticResource ImageButton}">
+                                                <Image Source="/NewSalesProject;component/Images/NewDelete.ico"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                                <Separator Background="Orange" Margin="0"/>
+                            </StackPanel>
+
+                        </ScrollViewer>
+                    </Grid>-->
+                </DockPanel>
+            </DockPanel>
+        </materialDesign:DialogHost>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <!--<DockPanel>
+            <Grid DockPanel.Dock="Top" Background="LightSkyBlue">
+                <TextBlock TextElement.FontWeight="Bold" HorizontalAlignment="Center" Text="RECEIPT INVOICE" Margin="4"/>
+            </Grid>
+            <DockPanel>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.ColumnSpan="3">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="2"/>
+                            </Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                <Setter Property="Background" Value="#cceeff"/>
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <DockPanel Margin="10 4">
+                            <TextBlock Text="Receipt Code"/>
+                            <TextBox/>
+                        </DockPanel>
+
+                        <DockPanel Grid.Column="1" Margin="10 4">
+                            <TextBlock Text="Receipt Date"/>
+                            <TextBox/>
+                        </DockPanel>
+                    </Grid>
+                    
+                    
+                    <DockPanel Grid.Row="1">
+                        <StackPanel DockPanel.Dock="Top">
+                            <Label Content="Details" HorizontalAlignment="Center" FontWeight="Bold"/>
+                        </StackPanel>
+                        <ContentControl>
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource DefaultTextBox}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="Padding" Value="2"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DefaultComboBox}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="Padding" Value="2"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <StackPanel>
+                                    <CheckBox>
+                                        <TextBlock Text="Price Included Tax"/>
+                                    </CheckBox>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Purchased Price"/>
+                                        <TextBox Margin="0 0 10 0" Grid.Column="1" Text="{Binding NewReDtail.Quantity}"/>
+                                        <TextBlock Margin="20 0 0 0" Grid.Column="2" Text="Quantity"/>
+                                        <wpfTool:IntegerUpDown Grid.Column="3" Margin="2" Text="{Binding NewReDtail.Quantity}"/>
+
+                                        <TextBlock Grid.Row="1" Text="Discount Percent"/>
+                                        <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 10 0">
+                                            <TextBlock Text="%" DockPanel.Dock="Right"/>
+                                            <TextBox Text="{Binding NewReDtail.Quantity}"/>
+                                        </DockPanel>
+                                        <TextBlock Margin="20 0 0 0" Text="Coupon" Grid.Row="1" Grid.Column="2"/>
+                                        <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding NewReDtail.Quantity}"/>
+                                    </Grid>
+                                    <TextBlock Text="Purchased from Store"/>
+                                    <ComboBox/>
+                                </StackPanel>
+
+
+                                <Grid VerticalAlignment="Bottom">
+                                    <Button Padding="10 2" Margin="10 4" HorizontalAlignment="Right" Foreground="White">
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Margin="0 0 4 0" VerticalAlignment="Center" Kind="Add"/>
+                                            <TextBlock Text="Add"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </ContentControl>
+                        --><!--<ContentControl>
+                            <Grid>
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource DefaultTextBox}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="Padding" Value="2"/>
+                                    </Style>
+                                    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DefaultComboBox}">
+                                        <Setter Property="Margin" Value="2"/>
+                                        <Setter Property="Padding" Value="2"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <GroupBox materialDesign:ColorZoneAssist.Mode="PrimaryLight" Header="Add To Receipt" Padding="4">
+                                    <StackPanel>
+                                        <CheckBox>
+                                            <TextBlock Text="Price Included Tax"/>
+                                        </CheckBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="Purchased Price"/>
+                                            <TextBox Margin="0 0 10 0" Grid.Column="1" Text="{Binding NewReDtail.Quantity}"/>
+                                            <TextBlock Margin="20 0 0 0" Grid.Column="2" Text="Quantity"/>
+                                            <wpfTool:IntegerUpDown Grid.Column="3" Margin="2" Text="{Binding NewReDtail.Quantity}"/>
+
+                                            <TextBlock Grid.Row="1" Text="Discount Percent"/>
+                                            <DockPanel Grid.Row="1" Grid.Column="1" Margin="0 0 10 0">
+                                                <TextBlock Text="%" DockPanel.Dock="Right"/>
+                                                <TextBox Text="{Binding NewReDtail.Quantity}"/>
+                                            </DockPanel>
+                                            <TextBlock Margin="20 0 0 0" Text="Coupon" Grid.Row="1" Grid.Column="2"/>
+                                            <TextBox Grid.Column="3" Grid.Row="1" Text="{Binding NewReDtail.Quantity}"/>
+                                        </Grid>
+                                        <TextBlock Text="Purchased from Store"/>
+                                        <ComboBox/>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <Grid VerticalAlignment="Bottom">
+                                    <Button Padding="10 2" Margin="10 4" HorizontalAlignment="Left" Foreground="White">
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Margin="0 0 4 0" VerticalAlignment="Center" Kind="Clear"/>
+                                            <TextBlock Text="Clear"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Padding="10 2" Margin="10 4" HorizontalAlignment="Right" Foreground="White">
+                                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                            <materialDesign:PackIcon Margin="0 0 4 0" VerticalAlignment="Center" Kind="Add"/>
+                                            <TextBlock Text="Add"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </ContentControl>--><!--
+                    </DockPanel>
+
+                    <GroupBox  Grid.Row="1" Margin="2" BorderThickness="2" Header="Option" BorderBrush="#ffccee" Style="{StaticResource DefaultGroupBox}" Grid.Column="1">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" Margin="2 0"/>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <Grid Margin="4 2">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Width" Value="100"/>
+                                </Style>
+                                <Style TargetType="DockPanel">
+                                    <Setter Property="Margin" Value="1"/>
+                                </Style>
+                            </Grid.Resources>
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Input Currency"/>
+                                    <ComboBox MinWidth="60"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Tax Rate"/>
+                                    <TextBox/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Exchange Rate"/>
+                                    <TextBox/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Shipping Fee"/>
+                                    <TextBox MinWidth="60"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Additional Fee"/>
+                                    <TextBox/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+
+                    --><!--<GroupBox  Grid.Row="1" Margin="2" BorderThickness="2" Header="Option" BorderBrush="#ffccee" Style="{StaticResource DefaultGroupBox}" Grid.Column="2">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontWeight="Bold" Margin="2 0"/>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <Grid Margin="4 2">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Width" Value="90"/>
+                                </Style>
+                                <Style TargetType="DockPanel">
+                                    <Setter Property="Margin" Value="1"/>
+                                </Style>
+                            </Grid.Resources>
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Shipping Fee"/>
+                                    <TextBox MinWidth="60"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Additional Fee"/>
+                                    <TextBox/>
+                                </DockPanel>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>--><!--
+                </Grid>
+
+                <Grid Margin="0 4">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextAlignment" Value="Right"/>
+                                        <Setter Property="Margin" Value="4 2"/>
+                                        <Setter Property="FontWeight" Value="DemiBold"/>
+                                    </Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Padding" Value="0 2"/>
+                                        <Setter Property="Background" Value="LightSkyBlue"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+                                <Border>
+                                    <TextBlock TextAlignment="Center" Text="Delete"/>
+                                </Border>
+                                <Border>
+                                    <TextBlock TextAlignment="Center" Text="No."/>
+                                </Border>
+                                <Border Grid.Column="1">
+                                    <TextBlock TextAlignment="Center" Text="Product Name"/>
+                                </Border>
+                                <Border Grid.Column="2">
+                                    <TextBlock Text="Qty" TextAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="3">
+                                    <TextBlock Text="Price" TextAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="4">
+                                    <TextBlock Text="Tax" TextAlignment="Center"/>
+                                </Border>
+                                <Border Grid.Column="5">
+                                    <TextBlock Text="Discount"/>
+                                </Border>
+                                <Border Grid.Column="6">
+                                    <TextBlock Text="Real Price"/>
+                                </Border>
+
+                            </Grid>
+
+                            <StackPanel Margin="0 2 0 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Margin" Value="4 2"/>
+                                        </Style>
+                                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+                                            <Setter Property="Margin" Value="4 2"/>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <Grid>
+                                        <TextBlock Text="1" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <Grid MinHeight="40" Grid.Column="1">
+                                        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Text="Amazon.co.jp"/>
+                                    </Grid>
+                                    <StackPanel Grid.Column="2">
+                                        --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                        <control:NumberTextbox IsCurrencyVisible="False"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3">
+                                        --><!--<TextBlock TextAlignment="Right" Text="280¥"/>--><!--
+                                        <control:NumberTextbox/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                        <control:NumberTextbox IsTaxIncluding="{Binding}" IsEnabled="False" IsPercentSymbolVisible="True" IsCurrencyVisible="False"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="5">
+                                        --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                        <control:NumberTextbox IsEnabled="False"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="6">
+                                        --><!--<TextBlock TextAlignment="Right" Text="238¥"/>--><!--
+                                        <control:NumberTextbox IsEnabled="False"/>
+                                    </StackPanel>
+                                    --><!--<TextBlock VerticalAlignment="Top" TextAlignment="Right" Grid.Column="5" Text="20"/>
+                                    <TextBlock VerticalAlignment="Top" TextAlignment="Right" Grid.Column="6" Text="238¥"/>--><!--
+                                </Grid>
+                                <Separator Background="LightGray"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <DockPanel>
+                                        <Grid Width="50" Height="50">
+                                            
+                                        </Grid>
+                                        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="150" Text="sgegergerge ergerg eg ergerg "/>
+                                        <CheckBox DockPanel.Dock="Bottom">
+                                            <TextBlock Text="Price Included Tax"/>
+                                        </CheckBox>
+                                    </DockPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Price(Before )" FontStyle="Italic"/>
+                                        <TextBlock Text="24000" HorizontalAlignment="Center" FontStyle="Italic"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="2">
+                                        <Button Style="{StaticResource ImageButton}">
+                                            <Image Source="/NewSalesProject;component/Images/Edit.ico"/>
+                                        </Button>
+                                        <Button Style="{StaticResource ImageButton}">
+                                            <Image Source="/NewSalesProject;component/Images/NewDelete.ico"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                            <Separator Background="Orange" Margin="0"/>
+                        </StackPanel>
+
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
+        </DockPanel>-->
+    </Grid>
+</UserControl>

@@ -1,0 +1,231 @@
+﻿<UserControl x:Class="NewSalesProject.Views.ProductDetailContent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:support="clr-namespace:NewSalesProject.Supports"
+             xmlns:global="clr-namespace:NewSalesProject"
+             xmlns:behaviors="clr-namespace:NewSalesProject.Behavior"
+             xmlns:converters="clr-namespace:NewSalesProject.Converters"
+             xmlns:local="clr-namespace:NewSalesProject.Views"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             Loaded="UserControl_Loaded"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="900">
+    <UserControl.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="10">
+            <StackPanel Margin="0 10">
+                <TextBlock Text="Product Original Name" FontWeight="Bold" Foreground="Gray"/>
+                <TextBox Name="OriginName" Text="{Binding BindingItem.OriginalName, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+            </StackPanel>
+            <StackPanel Margin="0 10">
+                <TextBlock Text="Product Name" FontWeight="Bold" Foreground="Gray"/>
+                <TextBox Name="NameTextBox" Text="{Binding BindingItem.Name, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+            </StackPanel>
+            <Grid Margin="0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0 0 10 0">
+                    <TextBlock Text="Product Size" FontWeight="Bold" Foreground="Gray"/>
+                    <TextBox Text="{Binding BindingItem.Size, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10 0 0 0">
+                    <TextBlock Text="NetWeight" FontWeight="Bold" Foreground="Gray"/>
+                    <TextBox Text="{Binding BindingItem.NetWeight, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                </StackPanel>
+            </Grid>
+            <Grid Margin="0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="0 0 10 0">
+                    <TextBlock Text="Product Code"  FontWeight="Bold" Foreground="Gray"/>
+                    <TextBox Text="{Binding BindingItem.Code, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="10 0 0 0">
+                    <TextBlock Text="Category" FontWeight="Bold" Foreground="Gray"/>
+                    <ComboBox DisplayMemberPath="Name" ItemsSource="{x:Static support:DataAccess.Categories}" IsHitTestVisible="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                                  SelectedItem="{Binding BindingItem.Category, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <GroupBox materialDesign:ColorZoneAssist.Mode="PrimaryLight" Padding="4">
+                <GroupBox.HeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Plus" Margin="2 0"/>
+                            <TextBlock Text="Additional Infomation"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GroupBox.HeaderTemplate>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Visibility="{Binding IsAdditionalDataVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                        DataContext="{Binding RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}">
+                        <StackPanel Margin="4">
+                            <DockPanel>
+                                <TextBlock Width="82" Text="Lowest Price: " FontWeight="Bold" Foreground="Orange"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="2" TextAlignment="Right"
+                                           Text="{Binding BindingItem.LowestProductPrice.ExchangeRealPrice, 
+                                                ConverterCulture={x:Static global:App.VietNamCurrency}, StringFormat={}{0:C0}}" 
+                                           FontWeight="DemiBold"/>
+                                    <Separator Grid.Column="1" Margin="4 0" Width="2" Background="#ffaa00" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <TextBlock TextAlignment="Right" FontWeight="DemiBold"
+                                           Text="{Binding BindingItem.LowestProductPrice.RealPrice, StringFormat={}{0:C}}"
+                                           behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding BindingItem.LowestProductPrice.CurrencySymbol}"/>
+                                </Grid>
+
+                                <!--<TextBlock TextAlignment="Right" DockPanel.Dock="Right"
+                                           Text="{Binding BindingItem.LowestProductPrice.ExchangeRealPrice, 
+                                                ConverterCulture={x:Static global:App.VietNamCurrency}, StringFormat={}{0:C0}}" 
+                                           FontWeight="DemiBold"/>
+                                <Separator DockPanel.Dock="Right" Margin="10 0" Width="2" Background="#ffaa00" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <TextBlock TextAlignment="Right" DockPanel.Dock="Right" FontWeight="DemiBold"
+                                           Text="{Binding BindingItem.LowestProductPrice.RealPrice, StringFormat={}{0:C}}"
+                                           behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding BindingItem.LowestProductPrice.CurrencySymbol}"/>-->
+                            </DockPanel>
+                            <TextBlock Text="{Binding BindingItem.LowestProductPrice.Store.Name}" 
+                                       FontStyle="Italic" Foreground="Gray" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Separator Background="LightSkyBlue"/>
+                        <StackPanel Margin="4">
+                            <DockPanel>
+                                <TextBlock Width="82" Text="Highest Price: " FontWeight="Bold" Foreground="Orange"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="2" TextAlignment="Right"
+                                           Text="{Binding BindingItem.HighestProductPrice.ExchangeRealPrice, 
+                                                ConverterCulture={x:Static global:App.VietNamCurrency}, StringFormat={}{0:C0}}" 
+                                           FontWeight="DemiBold"/>
+                                    <Separator Grid.Column="1" Margin="4 0" Width="2" Background="#ffaa00" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <TextBlock TextAlignment="Right" FontWeight="DemiBold"
+                                           Text="{Binding BindingItem.HighestProductPrice.RealPrice, StringFormat={}{0:C}}"
+                                           behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding BindingItem.HighestProductPrice.CurrencySymbol}"/>
+                                </Grid>
+                                <!--<TextBlock TextAlignment="Right" DockPanel.Dock="Right"
+                                           Text="{Binding BindingItem.HighestProductPrice.ExchangeRealPrice, 
+                                                ConverterCulture={x:Static global:App.VietNamCurrency}, StringFormat={}{0:C0}}" 
+                                           FontWeight="DemiBold"/>
+                                <Separator DockPanel.Dock="Right" Margin="10 0" Width="2" Background="#ffaa00" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <TextBlock TextAlignment="Right" DockPanel.Dock="Right" FontWeight="DemiBold"
+                                           Text="{Binding BindingItem.HighestProductPrice.RealPrice, StringFormat={}{0:C}}"
+                                           behaviors:TextBlockFormatChangeBehavior.CurrencySymbol="{Binding BindingItem.HighestProductPrice.CurrencySymbol}"/>-->
+                            </DockPanel>
+                            <TextBlock Text="{Binding BindingItem.HighestProductPrice.Store.Name}"
+                                       FontStyle="Italic" Foreground="Gray" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Separator  Background="LightSkyBlue"/>
+                        <StackPanel Margin="4">
+                            <DockPanel>
+                                <TextBlock Text="Stock Quantity: " FontWeight="Bold" Foreground="Orange"/>
+                                <TextBlock TextAlignment="Right" Text="8" FontWeight="DemiBold"/>
+                            </DockPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="Reserved Quantity:   " FontStyle="Italic" Foreground="Gray"/>
+                                <TextBlock Text="4" FontStyle="Italic" Foreground="Gray"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <GridSplitter Visibility="{Binding IsAdditionalDataVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                        ResizeBehavior="PreviousAndNext" Width="2" Margin="4 0" Grid.Column="1" Background="LightGray"/>
+
+                    <DockPanel>
+                        <DockPanel.Style>
+                            <Style TargetType="DockPanel">
+                                <Setter Property="Grid.Column" Value="2"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAdditionalDataVisible, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" Value="false">
+                                        <Setter Property="Grid.Column" Value="0"/>
+                                        <Setter Property="Grid.ColumnSpan" Value="3"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Style>
+                        <StackPanel Margin="2 4" DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Product Decription" Foreground="Orange" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <RichTextBox IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" Padding="4" Margin="2"/>
+
+                    </DockPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="Product Image" HorizontalAlignment="Center" FontWeight="Bold" Foreground="Gray"/>
+                <Border BorderBrush="Orange" BorderThickness="2" Height="182" Width ="182" Margin="2 4">
+                    <Grid>
+                        <Image Source="/NewSalesProject;component/Images/NoImage.jpeg">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=BindingImage, Path=Source}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                        <Image Name="BindingImage" Source="{Binding BindingItem.Picture, IsAsync=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Content="Change"/>
+                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Grid.Column="1" Content="Delete"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

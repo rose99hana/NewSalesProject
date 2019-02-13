@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="NewSalesProject.Views.GoodsReceiptView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NewSalesProject.Views"
+             xmlns:controls="clr-namespace:NewSalesProject.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="900">
+    <Grid>
+        <Grid  Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:MyDataList 
+            x:Name="DtGrid"
+            Grid.ColumnSpan="3"
+            Title="Product's List"
+            ItemsSource="{Binding ViewItems}" 
+            SelectedItem="{Binding SelectedItem}"
+            SelectedIndex="{Binding SelectedIndex}"
+            SearchProperty="{Binding SearchProperty}"
+            SearchKeyWord ="{Binding SearchKeyword}"
+            FilterCommand="{Binding CRUDCommand}"
+            ClearFilterCommand="{Binding CRUDCommand}"
+            RefreshCommand="{Binding CRUDCommand}" 
+            AddCommand="{Binding CRUDCommand}"
+            DeleteCommand="{Binding CRUDCommand}"
+            DuplicateItemCommand="{Binding CRUDCommand}"
+            UpdateDetailsCommand="{Binding CRUDCommand}"
+            IsAutoUpdateEnable="{Binding IsAutoUpdateEnable}"
+            DataGridState="{Binding DataGridState}"
+            IsFiltered="{Binding IsFiltered}"
+            DataGridSpinnerState="{Binding DataGridSpinnerState}"/>
+
+        </Grid>
+
+        <controls:CRUDStateCard CRUDType="{Binding CRUDType}" CardState="{Binding CRUDState}"/>
+    </Grid>
+</UserControl>

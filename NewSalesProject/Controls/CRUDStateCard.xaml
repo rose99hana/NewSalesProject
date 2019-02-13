@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="NewSalesProject.Controls.CRUDStateCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NewSalesProject.Controls"
+             xmlns:enum="clr-namespace:NewSalesProject.Enum"
+             mc:Ignorable="d" 
+             IsHitTestVisible="False"
+             Name="uc"
+             RenderTransformOrigin="0.5, 0.5"
+             Background="Transparent"
+             d:DesignHeight="100" d:DesignWidth="200">
+    <Grid HorizontalAlignment="Center" Height="60">
+        <Border Background="Black" Opacity="0.6" CornerRadius="10">
+        </Border>
+        <StackPanel Orientation="Horizontal" Margin="5 0 10 0">
+            <local:SpinnerCogs Margin="10 30" RenderTransformOrigin="0.5, 0.5">
+                <local:SpinnerCogs.RenderTransform>
+                    <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                </local:SpinnerCogs.RenderTransform>
+            </local:SpinnerCogs>
+            <TextBlock FontFamily="Footlight MT Light" VerticalAlignment="Center" FontSize="26" Foreground="White">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Saving}">
+                                <Setter Property="Text" Value="Saving..."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Adding}">
+                                <Setter Property="Text" Value="Adding..."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Deleting}">
+                                <Setter Property="Text" Value="Deleting..."/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Copying}">
+                                <Setter Property="Text" Value="Copying..."/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</UserControl>
