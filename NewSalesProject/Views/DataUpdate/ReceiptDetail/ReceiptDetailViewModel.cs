@@ -5,6 +5,7 @@ using NewSalesProject.Supports;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,17 +19,53 @@ namespace NewSalesProject.Views
         {
             Name = "Receipt Detail";
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.ReceiptDetails);
-            var MyCollection = new ObservableCollection<ReceiptDetail>(productViewModel.GoodsReceiptVM.NewItem.ReceiptDetails);
         }
 
-        public ReceiptDetailViewModel(ProductViewModel itemPara)
+        public ReceiptDetailViewModel(GoodsReceiptViewModel viewModel)
         {
             Name = "Receipt Detail";
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.ReceiptDetails);
-            productViewModel = itemPara;
+            goodsReceiptVM = viewModel;
+
         }
 
-        private ProductViewModel productViewModel;
+        private GoodsReceiptViewModel goodsReceiptVM;
+        private GoodsReceipt parentGoodsReceipt;
+
+        private Product selectedProduct;
+        public Product SelectedProduct
+        {
+            get { return selectedProduct; }
+            set
+            {
+                selectedProduct = value;
+                OnPropertyChanged("SelectedProduct");
+            }
+        }
+
+        public override void OnSelectedItemChanged()        //Not delete, prevent InEditItem Changed
+        {
+        }
+
+        public void OnSelectedProductChanged(Product para)
+        {
+            SelectedProduct = para;
+        }
+
+        public void OnSelectedParentGoodsReceiptChanged(GoodsReceipt para)
+        {
+            parentGoodsReceipt = para;
+            GetData();
+        }
+
+        protected override void GetData()
+        {
+            DataAccess.ReceiptDetails.Clear();
+            if (parentGoodsReceipt != null && parentGoodsReceipt.ReceiptDetails.Count != 0)
+            {
+                DataAccess.ReceiptDetails = new ObservableCollection<ReceiptDetail>(parentGoodsReceipt.ReceiptDetails);
+            }
+        }
 
         protected override void Refresh()
         {
@@ -37,45 +74,16 @@ namespace NewSalesProject.Views
             SelectedItem = null;
         }
 
-        protected override void CreateNew()
-        {
-            NewItem = new ReceiptDetail();
-            NewItem.CurrencySymbol = productViewModel.GoodsReceiptVM.NewItem.CurrencySymbol;
-            NewItem.Tax = productViewModel.GoodsReceiptVM.NewItem.TaxRate;
-        }
-
-        protected async override void Add()
-        {
-            CRUDType = CRUDType.Adding;
-            CRUDState = CRUDCardState.Busy;
-            await Task.Delay(150);
-            NewItem.Product = productViewModel.SelectedItem;
-            CaculateValue(NewItem);
-            DataAccess.ReceiptDetails.Add(NewItem);
-
-            productViewModel.GoodsReceiptVM.UpdateItem(productViewModel.GoodsReceiptVM.NewItem);
-
-            SelectedItem = NewItem;
-            CRUDState = CRUDCardState.Default;
-        }
-
-        protected void Add(ReceiptDetail para)
-        {
-            CaculateValue(para);
-            DataAccess.ReceiptDetails.Add(para);
-            productViewModel.GoodsReceiptVM.UpdateItem(productViewModel.GoodsReceiptVM.NewItem);
-        }
-
         public override void UpdateItemDetails()
         {
             foreach (ReceiptDetail item in ViewItems)
             {
-                item.CurrencySymbol = productViewModel.GoodsReceiptVM.NewItem.CurrencySymbol;
-                item.Tax = productViewModel.GoodsReceiptVM.NewItem.TaxRate;
+                item.CurrencySymbol = parentGoodsReceipt.CurrencySymbol;
+                item.Tax = parentGoodsReceipt.TaxRate;
                 CaculateValue(item);
             }
 
-            productViewModel.GoodsReceiptVM.UpdateItem(productViewModel.GoodsReceiptVM.NewItem);
+            goodsReceiptVM.UpdateItem(parentGoodsReceipt);
         }
 
         public void CaculateValue(ReceiptDetail para)
@@ -101,10 +109,38 @@ namespace NewSalesProject.Views
             }
         }
 
-        public override void OnSelectedItemChanged()        //Not delete, prevent InselectedItem Changed
+        private void UpdateItem(ReceiptDetail item)
         {
+            CaculateValue(item);
+            item.RaisePropertyChanged("Price");
+            item.RaisePropertyChanged("Discount");
+            item.RaisePropertyChanged("Coupon");
+            item.RaisePropertyChanged("Quantity");
+            item.RaisePropertyChanged("IsTaxIncluding");
+            item.RaisePropertyChanged("IsTaxIncluding");
         }
 
+        protected override void CreateNew()
+        {
+            NewItem = new ReceiptDetail();
+            NewItem.CurrencySymbol = parentGoodsReceipt.CurrencySymbol;
+            NewItem.Tax = parentGoodsReceipt.TaxRate;
+        }
+
+        protected async override void Add()
+        {
+            CRUDType = CRUDType.Adding;
+            CRUDState = CRUDCardState.Busy;
+            await Task.Delay(150);
+            NewItem.Product = selectedProduct;
+            CaculateValue(NewItem);
+            DataAccess.ReceiptDetails.Add(NewItem);
+            parentGoodsReceipt.ReceiptDetails.Add(NewItem);
+            goodsReceiptVM.UpdateItem(parentGoodsReceipt);
+
+            SelectedItem = NewItem;
+            CRUDState = CRUDCardState.Default;
+        }
 
         protected override void Edit()
         {
@@ -139,7 +175,7 @@ namespace NewSalesProject.Views
             CRUDState = CRUDCardState.Busy;
             SelectedItem.IsEditable = false;
             UpdateItem(SelectedItem);
-            productViewModel.GoodsReceiptVM.UpdateItem(productViewModel.GoodsReceiptVM.NewItem);
+            goodsReceiptVM.UpdateItem(parentGoodsReceipt);
             CRUDState = CRUDCardState.Default;
         }
 
@@ -149,6 +185,7 @@ namespace NewSalesProject.Views
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
             DataAccess.ReceiptDetails.Remove(SelectedItem);
+            parentGoodsReceipt.ReceiptDetails.Remove(SelectedItem);
             SelectedItem = null;
             ReFocusRow(DataAccess.ProductPrices.Count);
             CRUDState = CRUDCardState.Default;
@@ -159,20 +196,12 @@ namespace NewSalesProject.Views
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
             DataAccess.ReceiptDetails.Clear();
+            parentGoodsReceipt.ReceiptDetails.Clear();
             SelectedItem = null;
             CRUDState = CRUDCardState.Default;
         }
 
-        private void UpdateItem(ReceiptDetail item)
-        {
-            CaculateValue(item);
-            item.RaisePropertyChanged("Price");
-            item.RaisePropertyChanged("Discount");
-            item.RaisePropertyChanged("Coupon");
-            item.RaisePropertyChanged("Quantity");
-            item.RaisePropertyChanged("IsTaxIncluding");
-            item.RaisePropertyChanged("IsTaxIncluding");
-        }
+
 
         
     }

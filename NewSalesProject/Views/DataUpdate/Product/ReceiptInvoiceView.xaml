@@ -91,13 +91,13 @@
                                 <Button Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                         Margin="2" Background="#99e6ff" Style="{StaticResource ImageButton}" 
                                         CommandParameter="Save"
-                                        Command="{Binding DataContext.ReceiptDetailVM.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                        Command="{Binding DataContext.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                     <Image Source="/NewSalesProject;component/Images/Save.png"/>
                                 </Button>
                                 <Button Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Margin="2" Background="#99e6ff" Style="{StaticResource ImageButton}"
                                         CommandParameter="CancelEdit"
-                                        Command="{Binding DataContext.ReceiptDetailVM.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                        Command="{Binding DataContext.CRUDCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                                     <Image Source="/NewSalesProject;component/Images/Cancel.png"/>
                                 </Button>
 
@@ -153,7 +153,7 @@
                             <TextBlock Text="{Binding SelectedItem.Name}" FontSize="20" VerticalAlignment="Center" Margin="0 4 4 4"/>
                         </Grid>
                     </DockPanel>
-                    <Grid DataContext="{Binding ReceiptDetailVM}">
+                    <Grid DataContext="{Binding GoodsReceiptVM.ReceiptDetailVM}">
                         <Grid.Resources>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Margin" Value="2"/>
@@ -386,19 +386,19 @@
                         </GroupBox>
 
                         <DockPanel Grid.Row="2" Grid.ColumnSpan="2">
-                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                <Button Name="OpenDialogButton" Click="OpenDialogButton_Click" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="CreateNew" Margin="4 2" Padding="4" Background="#ffccff" BorderBrush="Orchid">
+                            <StackPanel DataContext="{Binding GoodsReceiptVM.ReceiptDetailVM}" Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                                <Button Name="OpenDialogButton" Click="OpenDialogButton_Click" Command="{Binding CRUDCommand}" CommandParameter="CreateNew" Margin="4 2" Padding="4" Background="#ffccff" BorderBrush="Orchid">
                                     <materialDesign:PackIcon Kind="Add" Height="24" Width="24" Foreground="DarkOrchid"/>
                                 </Button>
-                                <Button Margin="4 2" Style="{StaticResource ImageButton}" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Refresh">
+                                <Button Margin="4 2" Style="{StaticResource ImageButton}" Command="{Binding CRUDCommand}" CommandParameter="Refresh">
                                     <Image Source="/NewSalesProject;component/Images/Refresh.png"/>
                                 </Button>
-                                <Button Name="EditButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Edit">
+                                <Button Name="EditButton" Margin="4 2" Command="{Binding CRUDCommand}" CommandParameter="Edit">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
-                                            <Setter Property="IsEnabled" Value="{Binding ReceiptDetailVM.SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
+                                            <Setter Property="IsEnabled" Value="{Binding SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
                                                     <Setter Property="Button.IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -406,12 +406,12 @@
                                     </Button.Style>
                                     <Image Source="/NewSalesProject;component/Images/Edit.ico"/>
                                 </Button>
-                                <Button Name="DeleteButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="Delete">
+                                <Button Name="DeleteButton" Margin="4 2" Command="{Binding CRUDCommand}" CommandParameter="Delete">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
-                                            <Setter Property="IsEnabled" Value="{Binding ReceiptDetailVM.SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
+                                            <Setter Property="IsEnabled" Value="{Binding SelectedItem.IsEditable, Converter={x:Static converters:Bool2ReverseBoolConverter.Instance}}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
                                                     <Setter Property="Button.IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -419,12 +419,12 @@
                                     </Button.Style>
                                     <Image Source="/NewSalesProject;component/Images/NewDelete.ico"/>
                                 </Button>
-                                <Button Name="DeleteAllButton" Margin="4 2" Command="{Binding ReceiptDetailVM.CRUDCommand}" CommandParameter="DeleteAll">
+                                <Button Name="DeleteAllButton" Margin="4 2" Command="{Binding CRUDCommand}" CommandParameter="DeleteAll">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
                                             <Setter Property="IsEnabled" Value="{Binding ElementName=InvoiceDtGrid, Path=ItemsSource.Count}"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ReceiptDetailVM.SelectedItem.IsEditable}" Value="True">
+                                                <DataTrigger Binding="{Binding SelectedItem.IsEditable}" Value="True">
                                                     <Setter Property="Button.IsEnabled" Value="False"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -461,15 +461,15 @@
                     </Grid>
 
 
-                    <Grid Margin="0 2 0 0" DockPanel.Dock="Top">
+                    <Grid DataContext="{Binding GoodsReceiptVM.ReceiptDetailVM}" Margin="0 2 0 0" DockPanel.Dock="Top">
                         <DataGrid DockPanel.Dock="Top" 
                               AutoGenerateColumns="False"
                               RowDetailsTemplate="{StaticResource InvoiceDtGridRowDetailTemplate}"
                               Name="InvoiceDtGrid"
                               CanUserAddRows="False"
                               GridLinesVisibility="None"
-                              ItemsSource="{Binding ReceiptDetailVM.ViewItems}"
-                              SelectedItem="{Binding ReceiptDetailVM.SelectedItem}"
+                              ItemsSource="{Binding ViewItems, diag:PresentationTraceSources.TraceLevel=High}"
+                              SelectedItem="{Binding SelectedItem}"
                               SelectionChanged="InvoiceDtGrid_SelectionChanged"
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
@@ -626,8 +626,8 @@
 
                         <controls:MySpinner x:Name="Spinner" 
                                 BackgroundOpacity="0.6"
-                                SpinnerState="{Binding DataContext.ReceiptDetailVM.DataGridSpinnerState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
-                                StateMode="{Binding DataContext.ReceiptDetailVM.DataGridState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                                SpinnerState="{Binding DataContext.DataGridSpinnerState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" 
+                                StateMode="{Binding DataContext.DataGridState, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
 
                     </Grid>
 

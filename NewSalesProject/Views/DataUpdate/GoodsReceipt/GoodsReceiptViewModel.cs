@@ -1,4 +1,5 @@
-﻿using NewSalesProject.Interfaces;
+﻿using NewSalesProject.Enum;
+using NewSalesProject.Interfaces;
 using NewSalesProject.Model;
 using NewSalesProject.Supports;
 using System;
@@ -16,32 +17,55 @@ namespace NewSalesProject.Views
         {
             Name = "Good Receipts";
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.GoodsReceipts);
+            ReceiptDetailVM = new ReceiptDetailViewModel(this);
         }
 
-        public GoodsReceiptViewModel(ProductViewModel itemPara)
+        protected ReceiptDetailViewModel receiptDetailVM;
+        public ReceiptDetailViewModel ReceiptDetailVM
         {
-            Name = "Good Receipts";
-            ViewItems = CollectionViewSource.GetDefaultView(DataAccess.GoodsReceipts);
-            productViewModel = itemPara;
+            get
+            {
+                return receiptDetailVM;
+            }
+            set
+            {
+                receiptDetailVM = value;
+                OnPropertyChanged("ReceiptDetailVM");
+            }
         }
 
-        private ProductViewModel productViewModel;
+        public override void OnSelectedItemChanged()
+        {
+            if (IsAutoUpdateEnable == true)
+            {
+                InEditItem = SelectedItem;
+                ReceiptDetailVM.OnSelectedParentGoodsReceiptChanged(selectedItem);
+            }
+        }
+
+        public void ChangeSelectedItemTo(GoodsReceipt para)
+        {
+            SelectedItem = para;
+        }
+
+        //private ProductViewModel productViewModel;
 
         protected override void CreateNew()
         {
             NewItem = new GoodsReceipt();
+            ReceiptDetailVM.OnSelectedParentGoodsReceiptChanged(NewItem);
         }
 
         protected override void CancelCreateNew()
         {
             NewItem = null;
+            ReceiptDetailVM.OnSelectedParentGoodsReceiptChanged(NewItem);
         }
 
         public void CaculateValue(GoodsReceipt para)
         {
             para.SubTotal = 0m;
-            var receiptDetails = productViewModel.ReceiptDetailVM.ViewItems;
-            foreach(ReceiptDetail item in receiptDetails)
+            foreach(ReceiptDetail item in para.ReceiptDetails)
             {
                 para.SubTotal += item.TaxIncTotal;
             }
@@ -65,11 +89,11 @@ namespace NewSalesProject.Views
 
         protected async override void Add()
         {
-            //CRUDType = CRUDType.Adding;
-            //CRUDState = CRUDCardState.Busy;
+            CRUDType = CRUDType.Adding;
+            CRUDState = CRUDCardState.Busy;
             //await DataAccess.AddProductPrice(NewItem);
-            //SelectedItem = NewItem;
-            //CRUDState = CRUDCardState.Default;
+            SelectedItem = NewItem;
+            CRUDState = CRUDCardState.Default;
         }
 
     }

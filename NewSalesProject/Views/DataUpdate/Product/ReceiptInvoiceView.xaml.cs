@@ -39,7 +39,7 @@ namespace NewSalesProject.Views
         private void InvoiceDtGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(DataContext != null)
-                (DataContext as ProductViewModel).ReceiptDetailVM.CancelEditFromView();
+                (DataContext as ProductViewModel).GoodsReceiptVM.ReceiptDetailVM.CancelEditFromView();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

@@ -21,8 +21,7 @@ namespace NewSalesProject.Views
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.Products);
             DtGridProperties = (string)Properties.Settings.Default["ProductDtGridProperties"];
             ProductPriceVM = new ProductPriceViewModel();
-            GoodsReceiptVM = new GoodsReceiptViewModel(this);
-            ReceiptDetailVM = new ReceiptDetailViewModel(this);
+            GoodsReceiptVM = new GoodsReceiptViewModel();
 
         }
 
@@ -62,20 +61,6 @@ namespace NewSalesProject.Views
             {
                 goodsReceiptVM = value;
                 OnPropertyChanged("GoodsReceiptVM");
-            }
-        }
-
-        protected ReceiptDetailViewModel receiptDetailVM;
-        public ReceiptDetailViewModel ReceiptDetailVM
-        {
-            get
-            {
-                return receiptDetailVM;
-            }
-            set
-            {
-                receiptDetailVM = value;
-                OnPropertyChanged("ReceiptDetailVM");
             }
         }
 
