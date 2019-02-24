@@ -1,6 +1,7 @@
 ﻿using NewSalesProject.Supports;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -22,15 +23,21 @@ namespace NewSalesProject.Model
         public string Name { get; set; }
         public string Size { get; set; }
         public int NetWeight { get; set; }
+        [Browsable(false)]
         public byte[] Picture { get; set; }
 
+        [Browsable(false)]
         public int? CategoryID { get; set; }
 
+        [Browsable(false)]
         [ForeignKey("CategoryID")]
         public virtual Category Category { get; set; }
 
+        [Browsable(false)]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        [Browsable(false)]
         public virtual ICollection<ReceiptDetail> ReceiptDetails { get; set; }
+        [Browsable(false)]
         public virtual ICollection<ProductPrice> ProductPrices { get; set; }
 
 
@@ -38,6 +45,7 @@ namespace NewSalesProject.Model
         public int StockQuantity { get; set; }
 
         private ProductPrice highestProductPrice;
+        [Browsable(false)]
         [NotMapped]
         public ProductPrice HighestProductPrice
         {
@@ -50,6 +58,7 @@ namespace NewSalesProject.Model
         }
 
         private ProductPrice lowestProductPrice;
+        [Browsable(false)]
         [NotMapped]
         public ProductPrice LowestProductPrice
         {
@@ -58,6 +67,18 @@ namespace NewSalesProject.Model
             {
                 lowestProductPrice = value;
                 OnPropertyChanged("LowestProductPrice");
+            }
+        }
+
+
+        protected override void CollectErrors(string propertyName)
+        {
+            Errors.Clear();
+            switch (propertyName)
+            {
+                case "OriginalName":
+                    CheckNotNull(propertyName, OriginalName);
+                    break;
             }
         }
 

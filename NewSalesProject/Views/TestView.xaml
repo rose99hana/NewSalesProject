@@ -10,99 +10,28 @@
              mc:Ignorable="d" 
               Background="White"
              d:DesignHeight="400" d:DesignWidth="400">
-    <!--<DockPanel Margin="16">
-        <StackPanel DockPanel.Dock="Top">
-            <Label FontSize="15" Content="New Invoice Detail" HorizontalAlignment="Center" FontWeight="Bold"/>
-        </StackPanel>
-        <DockPanel Background="Beige" DockPanel.Dock="Top">
-            <Border HorizontalAlignment="Left" BorderBrush="Orange" BorderThickness="2" Height="102" Width ="102" Margin="4">
-                <Grid>
-                    <Image Source="/NewSalesProject;component/Images/NoImage.jpeg">
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=BindingImage, Path=Source}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-                    <Image Name="BindingImage" Source="{Binding SelectedItem.Picture, IsAsync=True}"/>
-                </Grid>
-            </Border>
+    <StackPanel>
+        <Expander IsExpanded="True">
+            <Expander.Header>
+                <DockPanel>
+                    <Border BorderBrush="Orange" BorderThickness="1" Height="42" Width="42">
+                        <Image Source="/NewSalesProject;component/Images/MatsumotoLogo.jpg"/>
+                    </Border>
+                    <DockPanel VerticalAlignment="Center">
+                        <TextBlock FontFamily="Candara" DockPanel.Dock="Top" Margin="4 0" FontWeight="DemiBold" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="15" Text="Ama wfw wfw wfwf zon.co.jp" />
+                        <TextBlock VerticalAlignment="Bottom" Margin="4 2" FontStyle="Italic" FontSize="10">
+                        <Run Text="("/>
+                        <Run Text="4 Items"/>
+                        <Run Text=")"/>
+                        </TextBlock>
+                    </DockPanel>
+                </DockPanel>
+            </Expander.Header>
+            <Expander.Content>
+                <ItemsPresenter />
+            </Expander.Content>
+        </Expander>
+        
 
-            <Grid Margin="4">
-                <TextBlock Text="{Binding SelectedItem.Name}" FontSize="20" VerticalAlignment="Center" Margin="0 4 4 4"/>
-            </Grid>
-        </DockPanel>
-        <Grid DataContext="{Binding ReceiptDetailVM}">
-            <Grid.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Margin" Value="2"/>
-                    <Setter Property="VerticalAlignment" Value="Center"/>
-                </Style>
-                <Style TargetType="{x:Type controls:CurrencyTextbox}" BasedOn="{StaticResource MaterialDesignTextBox}">
-                    <Setter Property="Margin" Value="2"/>
-                    <Setter Property="TextAlignment" Value="Right"/>
-                </Style>
-                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource DefaultComboBox}">
-                    <Setter Property="Margin" Value="2"/>
-                    <Setter Property="Padding" Value="2"/>
-                </Style>
-            </Grid.Resources>
-            <StackPanel Margin="0 10">
-                <CheckBox  IsChecked="{Binding NewItem.IsTaxIncluding}">
-                    <TextBlock Text="Price Included Tax"/>
-                </CheckBox>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="90"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="90"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Purchased Price"/>
-                    --><!--<TextBox Grid.Column="1" Text="{Binding NewItem.Price}"/>--><!--
-                    <controls:CurrencyTextbox Grid.Column="1" Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.Price}"/>
-
-                    <TextBlock Grid.Column="3" Text="Quantity"/>
-                    <wpfTool:IntegerUpDown Grid.Column="4" Minimum="1" Margin="2" Text="{Binding NewItem.Quantity}"/>
-
-                    <TextBlock Grid.Row="1" Text="Discount Percent"/>
-                    <controls:CurrencyTextbox Grid.Column="1" Grid.Row="1" Currency="%" OriginText="{Binding NewItem.Discount}"/>
-
-                    <TextBlock Text="Coupon" Grid.Row="1" Grid.Column="3"/>
-                    <controls:CurrencyTextbox Grid.Column="4" Grid.Row="1" Currency="{Binding NewItem.CurrencySymbol}" OriginText="{Binding NewItem.Coupon}"/>
-                </Grid>
-                <CheckBox Margin="0 30 0 10" Content="Add this price information to Price List" IsChecked="True"/>
-            </StackPanel>
-
-
-            <Grid VerticalAlignment="Bottom">
-                <Button Name="AddButton" Click="AddButton_Click" Command="{Binding CRUDCommand}" CommandParameter="Add"
-                                Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right">
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <materialDesign:PackIcon VerticalAlignment="Center" Height="20" Width="20" Kind="Add"/>
-                        <TextBlock Text="ADD"/>
-                    </StackPanel>
-                </Button>
-
-                <Button Style="{StaticResource MaterialDesignFlatButton}"
-                                    Command="materialDesign:DialogHost.CloseDialogCommand"
-                                    HorizontalAlignment="Left">
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <materialDesign:PackIcon VerticalAlignment="Center" Height="18" Width="18" Kind="Cancel"/>
-                        <TextBlock Text="CANCEL"/>
-                    </StackPanel>
-                </Button>
-            </Grid>
-        </Grid>
-    </DockPanel>-->
+    </StackPanel>
 </UserControl>

@@ -11,35 +11,38 @@
              RenderTransformOrigin="0.5, 0.5"
              Background="Transparent"
              d:DesignHeight="100" d:DesignWidth="200">
-    <Grid HorizontalAlignment="Center" Height="60">
-        <Border Background="Black" Opacity="0.6" CornerRadius="10">
-        </Border>
-        <StackPanel Orientation="Horizontal" Margin="5 0 10 0">
-            <local:SpinnerCogs Margin="10 30" RenderTransformOrigin="0.5, 0.5">
-                <local:SpinnerCogs.RenderTransform>
-                    <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
-                </local:SpinnerCogs.RenderTransform>
-            </local:SpinnerCogs>
-            <TextBlock FontFamily="Footlight MT Light" VerticalAlignment="Center" FontSize="26" Foreground="White">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Saving}">
-                                <Setter Property="Text" Value="Saving..."/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Adding}">
-                                <Setter Property="Text" Value="Adding..."/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Deleting}">
-                                <Setter Property="Text" Value="Deleting..."/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Copying}">
-                                <Setter Property="Text" Value="Copying..."/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-        </StackPanel>
+    <Grid>
+        <Border Background="White" Opacity="{Binding ElementName=uc, Path=BackgroundOpacity}"/>
+        <Grid HorizontalAlignment="Center" Height="60">
+            <Border Background="Black" Opacity="0.6" CornerRadius="10">
+            </Border>
+            <StackPanel Orientation="Horizontal" Margin="5 0 10 0">
+                <local:SpinnerCogs Margin="10 30" RenderTransformOrigin="0.5, 0.5">
+                    <local:SpinnerCogs.RenderTransform>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </local:SpinnerCogs.RenderTransform>
+                </local:SpinnerCogs>
+                <TextBlock FontFamily="Footlight MT Light" VerticalAlignment="Center" FontSize="26" Foreground="White">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Saving}">
+                                    <Setter Property="Text" Value="Saving..."/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Adding}">
+                                    <Setter Property="Text" Value="Adding..."/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Deleting}">
+                                    <Setter Property="Text" Value="Deleting..."/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=uc, Path=CRUDType}" Value="{x:Static enum:CRUDType.Copying}">
+                                    <Setter Property="Text" Value="Copying..."/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

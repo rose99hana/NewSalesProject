@@ -38,7 +38,7 @@
             </StackPanel>
             <StackPanel Margin="0 10">
                 <TextBlock Text="Product Name" FontWeight="Bold" Foreground="Gray"/>
-                <TextBox Name="NameTextBox" Text="{Binding BindingItem.Name, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                <TextBox Name="NameTextBox" Text="{Binding BindingItem.Name, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
             </StackPanel>
             <Grid Margin="0 10">
                 <Grid.ColumnDefinitions>

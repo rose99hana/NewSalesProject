@@ -38,5 +38,8 @@
     <Setting Name="AssetDtGridProperties" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default</Value>
     </Setting>
+    <Setting Name="GoodsReceiptDtGridProperties" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Default</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

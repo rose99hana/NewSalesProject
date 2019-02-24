@@ -15,11 +15,16 @@ namespace NewSalesProject.Model
         {
             GoodsReceipts = new HashSet<GoodsReceipt>();
             ProductPrices = new HashSet<ProductPrice>();
+            CurrencySymbol = "¥";
+            TaxRate = 8m;
+
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        public Decimal TaxRate { get; set; }
+        public string CurrencySymbol { get; set; }
         public byte[] Logo { get; set; }
 
         [Browsable(false)]

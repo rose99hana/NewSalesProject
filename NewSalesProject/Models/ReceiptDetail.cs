@@ -14,6 +14,8 @@ namespace NewSalesProject.Model
         {
             Quantity = 1;
             IsTaxIncluding = true;
+            AddNewToPriceList = true;
+            IsUsedToSell = false;
         }
 
         public int Id { get; set; }
@@ -22,6 +24,7 @@ namespace NewSalesProject.Model
         public Decimal Discount { get; set; }
         public Decimal Coupon { get; set; }
         public bool IsTaxIncluding { get; set; }
+        public bool IsUsedToSell { get; set; }
 
         public bool IsSoldOut { get; set; } = false;
         public int SoldQty { get; set; }
@@ -168,7 +171,8 @@ namespace NewSalesProject.Model
             }
         }
 
-        private bool addNewToPriceList = true;
+        private bool addNewToPriceList;
+        [NotMapped]
         public bool AddNewToPriceList
         {
             get { return addNewToPriceList; }
@@ -179,57 +183,30 @@ namespace NewSalesProject.Model
             }
         }
 
-        [NotMapped]
-        public int Amount { get; set; }
-        [NotMapped]
-        public int StockQty { get; set; }
+
+        //private int _VNDPrice;
         //[NotMapped]
-        //public int TaxIncPrice { get; set; }
-        [NotMapped]
-        public int RowNumber { get; set; }
+        //public int VNDPrice
+        //{
+        //    get { return _VNDPrice; }
+        //    set
+        //    {
+        //        _VNDPrice = value;
+        //        OnPropertyChanged("VNDPrice");
+        //    }
+        //}
+
+        //private int _VNDTaxIncPrice;
         //[NotMapped]
-        //public int TotalDiscount { get; set; }
-        [NotMapped]
-        public int DiscountPerUnit { get; set; }
-        [NotMapped]
-        public int RealPrice { get; set; }
-        [NotMapped]
-        public int AmountBeforeDiscount { get; set; }
+        //public int VNDTaxIncPrice
+        //{
+        //    get { return _VNDTaxIncPrice; }
+        //    set
+        //    {
+        //        _VNDTaxIncPrice = value;
+        //        OnPropertyChanged("VNDTaxIncPrice");
+        //    }
+        //}
 
-        private int _VNDPrice;
-        [NotMapped]
-        public int VNDPrice
-        {
-            get { return _VNDPrice; }
-            set
-            {
-                _VNDPrice = value;
-                OnPropertyChanged("VNDPrice");
-            }
-        }
-
-        private int _VNDTaxIncPrice;
-        [NotMapped]
-        public int VNDTaxIncPrice
-        {
-            get { return _VNDTaxIncPrice; }
-            set
-            {
-                _VNDTaxIncPrice = value;
-                OnPropertyChanged("VNDTaxIncPrice");
-            }
-        }
-
-        private bool isSelected = false;
-        [NotMapped]
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                isSelected = value;
-                OnPropertyChanged("IsSelected");
-            }
-        }
     }
 }

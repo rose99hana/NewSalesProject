@@ -20,7 +20,7 @@ namespace NewSalesProject.Views
             ViewModels.Add(new CustomerRankViewModel());
             ViewModels.Add(new CategoryViewModel());
             ViewModels.Add(new ProductViewModel());
-            ViewModels.Add(new AssetViewModel());
+            ViewModels.Add(new GoodsReceiptViewModel());
             CurrentViewModel = ViewModels[0];
             CurrentViewModel.ChangeViewCommandIsEnable = false;
         }

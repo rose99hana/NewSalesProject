@@ -41,6 +41,8 @@ namespace NewSalesProject.Model
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<GoodsReceipt> GoodsReceipts { get; set; }
         public virtual DbSet<ReceiptDetail> ReceiptDetails { get; set; }
+        public virtual DbSet<WishList> WishLists { get; set; }
+        public virtual DbSet<WishListDetail> WishListDetails { get; set; }
 
         public virtual DbSet<Asset> Assets { get; set; }
         public virtual DbSet<AssetCategory> AssetCategories { get; set; }

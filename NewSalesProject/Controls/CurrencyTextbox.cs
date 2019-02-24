@@ -69,6 +69,9 @@ namespace NewSalesProject.Controls
                 case "number":
                     myBinding.StringFormat = "{0:N0}";
                     break;
+                default:
+                    myBinding.StringFormat = "{0:N0}";
+                    break;
             }
             //myBinding.StringFormat = "{0:C0}";
             (d as CurrencyTextbox).SetBinding(CurrencyTextbox.TextProperty, myBinding);

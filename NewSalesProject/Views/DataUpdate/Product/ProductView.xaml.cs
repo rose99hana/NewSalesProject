@@ -91,6 +91,7 @@ namespace NewSalesProject.Views
 
         private PriceListView priceListView;
         private ReceiptInvoiceView receiptInvoiceView;
+        private WishListView wishListView;
 
 
         private void MenuToggleRadioButton1_Checked(object sender, RoutedEventArgs e)
@@ -117,8 +118,11 @@ namespace NewSalesProject.Views
                             DetailsButton2.IsChecked = true;
                     CreateReceiptInvoiceView(ViewsContent1);
                     break;
-                case "ReceiptsListButton1":
-                    CreateReceiptListView(ViewsContent1);
+                case "WishListButton1":
+                    if (CheckTwoView())
+                        if (WishListButton2.IsChecked == true)
+                            DetailsButton2.IsChecked = true;
+                    CreateWishListView(ViewsContent1);
                     break;
             }
         }
@@ -143,6 +147,12 @@ namespace NewSalesProject.Views
                         if (ReceiptInvoiceButton1.IsChecked == true)
                             DetailsButton1.IsChecked = true;
                     CreateReceiptInvoiceView(ViewsContent2);
+                    break;
+                case "WishListButton2":
+                    if (CheckTwoView())
+                        if (WishListButton1.IsChecked == true)
+                            DetailsButton1.IsChecked = true;
+                    CreateWishListView(ViewsContent2);
                     break;
             }
         }
@@ -202,12 +212,23 @@ namespace NewSalesProject.Views
             viewContent.Content = receiptInvoiceView;
         }
 
-        private void CreateReceiptListView(ContentControl viewContent)
+        private void CreateWishListView(ContentControl viewContent)
         {
-            viewContent.Content = null;
+            if (wishListView == null)
+            {
+                wishListView = new WishListView();
+                wishListView.CancelButton.Click += WishListCancelButton_Click;
+            }
+            viewContent.Content = wishListView;
         }
 
-
+        private void WishListCancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WishListButton1.IsChecked == true)
+                DetailsButton1.IsChecked = true;
+            else if (WishListButton2.IsChecked == true)
+                DetailsButton2.IsChecked = true;
+        }
 
 
         private void InvoiceCancelButton_Click(object sender, RoutedEventArgs e)

@@ -18,8 +18,7 @@
 
             <controls:MyDataList 
             x:Name="DtGrid"
-            Grid.ColumnSpan="3"
-            Title="Product's List"
+            Title="GoodsReceipt's List"
             ItemsSource="{Binding ViewItems}" 
             SelectedItem="{Binding SelectedItem}"
             SelectedIndex="{Binding SelectedIndex}"
@@ -37,6 +36,90 @@
             IsFiltered="{Binding IsFiltered}"
             DataGridSpinnerState="{Binding DataGridSpinnerState}"/>
 
+            <GridSplitter Background="Gray" HorizontalAlignment="Stretch" Width="3" Margin="0 2" Grid.Column="1"/>
+
+            <DockPanel Grid.Column="2" Margin="2">
+                <Grid DockPanel.Dock="Top">
+                    <controls:DetailsHeaderBar x:Name="HeaderBar" HeaderText="Selected Product: " Text="{Binding InEditItem.Name}"/>
+                </Grid>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <DockPanel Name="View1" Grid.ColumnSpan="3">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.Resources>
+                                <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                    <Setter Property="GroupName" Value="Feature1"/>
+                                </Style>
+                            </DockPanel.Resources>
+
+                            <RadioButton Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="WishListButton1">
+                                <TextBlock Text="Wish List"/>
+                            </RadioButton>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Name="DetailsButton1">
+                                    <TextBlock Text="Details"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Name="PriceListButton1">
+                                    <TextBlock Text="Price List"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton1_Checked" Visibility="Collapsed" Unchecked="NewToggleRadioButton_Unchecked" Name="NewButton1">
+                                    <TextBlock Text="New"/>
+                                </RadioButton>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <ContentControl Style="{StaticResource TabViewContentStyle1}" Name="ViewsContent1"/>
+                    </DockPanel>
+
+
+                    <GridSplitter Visibility="{Binding ElementName=View2, Path=Visibility}" Background="BurlyWood" HorizontalAlignment="Stretch" Width="3" Margin="2 0" Grid.Column="1"/>
+
+
+                    <DockPanel Name="View2" Grid.Column="2" Visibility="Collapsed">
+                        <DockPanel DockPanel.Dock="Top">
+                            <DockPanel.Resources>
+                                <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                    <Setter Property="GroupName" Value="Feature2"/>
+                                </Style>
+                            </DockPanel.Resources>
+
+                            <RadioButton Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="WishListButton2">
+                                <TextBlock Text="Wish List"/>
+                            </RadioButton>
+
+                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style BasedOn="{StaticResource MenuButtonStyle}" TargetType="RadioButton">
+                                        <Setter Property="GroupName" Value="Feature2"/>
+                                    </Style>
+                                </StackPanel.Resources>
+
+                                <RadioButton Checked="MenuToggleRadioButton2_Checked" Name="DetailsButton2">
+                                    <TextBlock Text="Details"/>
+                                </RadioButton>
+
+                                <RadioButton Checked="MenuToggleRadioButton2_Checked" Name="PriceListButton2">
+                                    <TextBlock Text="Price List"/>
+                                </RadioButton>
+                            </StackPanel>
+
+                        </DockPanel>
+
+                        <ContentControl Style="{StaticResource TabViewContentStyle2}" Name="ViewsContent2"/>
+                    </DockPanel>
+                </Grid>
+            </DockPanel>
         </Grid>
 
         <controls:CRUDStateCard CRUDType="{Binding CRUDType}" CardState="{Binding CRUDState}"/>

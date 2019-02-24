@@ -70,6 +70,15 @@ namespace NewSalesProject.Controls
             DependencyProperty.Register("CRUDType", typeof(CRUDType), typeof(CRUDStateCard), new FrameworkPropertyMetadata(CRUDType.Saving, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
 
+        public double BackgroundOpacity
+        {
+            get { return (double)GetValue(BackgroundOpacityProperty); }
+            set { SetValue(BackgroundOpacityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BackgroundOpacity.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BackgroundOpacityProperty =
+            DependencyProperty.Register("BackgroundOpacity", typeof(double), typeof(CRUDStateCard), new PropertyMetadata(0d));
 
 
     }

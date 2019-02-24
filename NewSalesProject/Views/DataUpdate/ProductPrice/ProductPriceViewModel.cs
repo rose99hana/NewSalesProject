@@ -228,13 +228,14 @@ namespace NewSalesProject.Views
             if(item.IsTaxIncluding == false)
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100 + JPYTax / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * JPYrate);
-
+                item.ExchangeRealPrice = (item.RealPrice * JPYrate);
+                item.ExchangePrice = item.Price * JPYrate;
             }
             else
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * JPYrate);
+                item.ExchangeRealPrice = (item.RealPrice * JPYrate);
+                item.ExchangePrice = item.Price * JPYrate;
             }
         }
 
@@ -243,12 +244,14 @@ namespace NewSalesProject.Views
             if (item.IsTaxIncluding == false)
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100 + USDTax / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * USDrate);
+                item.ExchangeRealPrice = (item.RealPrice * USDrate);
+                item.ExchangePrice = item.Price * USDrate;
             }
             else
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * USDrate);
+                item.ExchangeRealPrice = (item.RealPrice * USDrate);
+                item.ExchangePrice = item.Price * USDrate;
             }
         }
 
@@ -257,12 +260,14 @@ namespace NewSalesProject.Views
             if (item.IsTaxIncluding == false)
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100 + EURTax / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * EURrate);
+                item.ExchangeRealPrice = (item.RealPrice * EURrate);
+                item.ExchangePrice = item.Price * EURrate;
             }
             else
             {
                 item.RealPrice = item.Price * (1 - item.Discount / 100) - item.Coupon;
-                item.ExchangeRealPrice = (int)(item.RealPrice * EURrate);
+                item.ExchangeRealPrice = (item.RealPrice * EURrate);
+                item.ExchangePrice = item.Price * EURrate;
             }
         }
 

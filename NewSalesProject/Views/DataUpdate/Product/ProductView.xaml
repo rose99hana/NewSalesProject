@@ -69,9 +69,9 @@
                             <RadioButton Visibility="Collapsed" Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="2 2 0 4" Background="#ff66b3" Name="ReceiptInvoiceButton1">
                                 <TextBlock Text="Invoice"/>
                             </RadioButton>
-                            <!--<RadioButton Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="ReceiptsListButton1">
-                                <TextBlock Text="Receipts List"/>
-                            </RadioButton>-->
+                            <RadioButton Checked="MenuToggleRadioButton1_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="WishListButton1">
+                                <TextBlock Text="Wish List"/>
+                            </RadioButton>
 
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                                 <RadioButton Checked="MenuToggleRadioButton1_Checked" Name="DetailsButton1">
@@ -109,9 +109,9 @@
                             <RadioButton Visibility="Collapsed" Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="2 2 0 4" Background="#ff66b3" Name="ReceiptInvoiceButton2">
                                 <TextBlock Text="Invoice"/>
                             </RadioButton>
-                            <!--<RadioButton Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="ReceiptsListButton2">
-                                <TextBlock Text="Receipts List"/>
-                            </RadioButton>-->
+                            <RadioButton Checked="MenuToggleRadioButton2_Checked" DockPanel.Dock="Right" Margin="0 2 2 4" Background="#ff884d" Name="WishListButton2">
+                                <TextBlock Text="Wish List"/>
+                            </RadioButton>
 
                             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                                 <StackPanel.Resources>

@@ -22,6 +22,7 @@ namespace NewSalesProject.Views
             DtGridProperties = (string)Properties.Settings.Default["ProductDtGridProperties"];
             ProductPriceVM = new ProductPriceViewModel();
             GoodsReceiptVM = new GoodsReceiptViewModel();
+            WishListVM = new WishListViewModel();
 
         }
 
@@ -64,6 +65,20 @@ namespace NewSalesProject.Views
             }
         }
 
+        protected WishListViewModel wishListVM;
+        public WishListViewModel WishListVM
+        {
+            get
+            {
+                return wishListVM;
+            }
+            set
+            {
+                wishListVM = value;
+                OnPropertyChanged("WishListVM");
+            }
+        }
+
         public override void SaveProperties(Dictionary<string, string> columnDictionary)
         {
             base.SaveProperties(columnDictionary);
@@ -77,6 +92,7 @@ namespace NewSalesProject.Views
             {
                 InEditItem = SelectedItem;
                 ProductPriceVM.GetPricesOfProduct(selectedItem);
+                GoodsReceiptVM.ReceiptDetailVM.OnSelectedProductChanged(SelectedItem);
             }
         }
 
@@ -202,7 +218,7 @@ namespace NewSalesProject.Views
         //    NewProductPriceItem = new ProductPrice();
         //}
 
-        
+
         //protected ICommand deleteProductPriceCommand;
         //public ICommand DeleteProductPriceCommand
         //{
@@ -223,24 +239,32 @@ namespace NewSalesProject.Views
         //}
 
 
-        //protected ICommand addToReceiptCommand;
-        //public ICommand AddToReceiptCommand
-        //{
-        //    get
-        //    {
-        //        if (addToReceiptCommand == null)
-        //        {
-        //            addToReceiptCommand = new RelayCommand(
-        //                p => AddToReceiptInvoice((ProductPrice)p));
-        //        }
-        //        return addToReceiptCommand;
-        //    }
-        //}
+        protected ICommand addProductPriceToWishListCommand;
+        public ICommand AddProductPriceToWishListCommand
+        {
+            get
+            {
+                if (addProductPriceToWishListCommand == null)
+                {
+                    addProductPriceToWishListCommand = new RelayCommand(
+                        p => AddToWishList(Convert.ToInt32(p)));
+                }
+                return addProductPriceToWishListCommand;
+            }
+        }
 
-        //private void AddToReceiptInvoice(ProductPrice p)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private void AddToWishList(int quantity)
+        {
+            WishListDetail temp = new WishListDetail();
+            temp.Quantity = quantity;
+            temp.ProductPrice = ProductPriceVM.SelectedItem;
+            temp.ProductPriceID = ProductPriceVM.SelectedItem.Id;
+            temp.StoreName = ProductPriceVM.SelectedItem.Store.Name;
+            temp.CurrencySymbol = temp.ProductPrice.Store.CurrencySymbol;
+            DataAccess.WishListDetails.Add(temp);
+            WishListVM.WishListDetailVM.ViewItems.GroupDescriptions.Clear();
+            WishListVM.WishListDetailVM.ViewItems.GroupDescriptions.Add(new PropertyGroupDescription("StoreName"));
+        }
 
 
         //protected string CodeGenerate(IModel model)

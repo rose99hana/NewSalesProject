@@ -122,12 +122,12 @@
     <Compile Include="Converters\ByteToImageConverter.cs" />
     <Compile Include="Converters\CenterPopupConverter.cs" />
     <Compile Include="Converters\CountToItemsConverter.cs" />
+    <Compile Include="Converters\CountToVisibilityConverter.cs" />
     <Compile Include="Converters\CurrencyToSymbolConverter.cs" />
     <Compile Include="Converters\MultiBindingToCommandParaObjectConverter.cs" />
     <Compile Include="Converters\ReverseBoolean2VisibilityConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Converters\ViewModeToVisibilityConverter.cs" />
-    <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
     <Compile Include="Enum\CRUDCardState.cs" />
     <Compile Include="Enum\CRUDType.cs" />
     <Compile Include="Enum\SpinnerState.cs" />
@@ -154,6 +154,8 @@
     <Compile Include="Models\SalesContext.cs" />
     <Compile Include="Models\Store.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\WishList.cs" />
+    <Compile Include="Models\WishListDetail.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -208,6 +210,9 @@
       <DependentUpon>GoodsReceiptView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DataUpdate\GoodsReceipt\GoodsReceiptViewModel.cs" />
+    <Compile Include="Views\DataUpdate\GoodsReceipt\GoodsReceiptDetailContent.xaml.cs">
+      <DependentUpon>GoodsReceiptDetailContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataUpdate\NewView.cs" />
     <Compile Include="Views\DataUpdate\ProductPrice\ProductPriceViewModel.cs" />
     <Compile Include="Views\DataUpdate\Product\AddPriceWindow.xaml.cs">
@@ -237,6 +242,11 @@
       <DependentUpon>StoreView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DataUpdate\Store\StoreViewModel.cs" />
+    <Compile Include="Views\DataUpdate\WishListDetail\WishListDetailViewModel.cs" />
+    <Compile Include="Views\DataUpdate\Product\WishListView.xaml.cs">
+      <DependentUpon>WishListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DataUpdate\WishList\WishListViewModel.cs" />
     <Compile Include="Views\Home\CustomSplashScreen.xaml.cs">
       <DependentUpon>CustomSplashScreen.xaml</DependentUpon>
     </Compile>
@@ -362,6 +372,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DataUpdate\GoodsReceipt\GoodsReceiptDetailContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\DataUpdate\Product\AddPriceWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -391,6 +405,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DataUpdate\Store\StoreView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataUpdate\Product\WishListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

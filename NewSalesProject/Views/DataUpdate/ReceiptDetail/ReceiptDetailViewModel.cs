@@ -18,17 +18,18 @@ namespace NewSalesProject.Views
         public ReceiptDetailViewModel()
         {
             Name = "Receipt Detail";
-            ViewItems = CollectionViewSource.GetDefaultView(DataAccess.ReceiptDetails);
+            ViewItems = CollectionViewSource.GetDefaultView(ReceiptDetails);
         }
 
         public ReceiptDetailViewModel(GoodsReceiptViewModel viewModel)
         {
             Name = "Receipt Detail";
-            ViewItems = CollectionViewSource.GetDefaultView(DataAccess.ReceiptDetails);
+            ViewItems = CollectionViewSource.GetDefaultView(ReceiptDetails);
             goodsReceiptVM = viewModel;
 
         }
 
+        public ObservableCollection<ReceiptDetail> ReceiptDetails { get; set; } = new ObservableCollection<ReceiptDetail>();
         private GoodsReceiptViewModel goodsReceiptVM;
         private GoodsReceipt parentGoodsReceipt;
 
@@ -60,10 +61,17 @@ namespace NewSalesProject.Views
 
         protected override void GetData()
         {
-            DataAccess.ReceiptDetails.Clear();
+            ReceiptDetails.Clear();
             if (parentGoodsReceipt != null && parentGoodsReceipt.ReceiptDetails.Count != 0)
             {
-                DataAccess.ReceiptDetails = new ObservableCollection<ReceiptDetail>(parentGoodsReceipt.ReceiptDetails);
+                foreach(ReceiptDetail item in parentGoodsReceipt.ReceiptDetails)
+                {
+                    item.CurrencySymbol = parentGoodsReceipt.CurrencySymbol;
+                    CaculateValue(item);
+                    ReceiptDetails.Add(item);
+                }
+
+                goodsReceiptVM.UpdateItem(parentGoodsReceipt);
             }
         }
 
@@ -117,7 +125,7 @@ namespace NewSalesProject.Views
             item.RaisePropertyChanged("Coupon");
             item.RaisePropertyChanged("Quantity");
             item.RaisePropertyChanged("IsTaxIncluding");
-            item.RaisePropertyChanged("IsTaxIncluding");
+            item.RaisePropertyChanged("CurrencySymbol");
         }
 
         protected override void CreateNew()
@@ -134,7 +142,7 @@ namespace NewSalesProject.Views
             await Task.Delay(150);
             NewItem.Product = selectedProduct;
             CaculateValue(NewItem);
-            DataAccess.ReceiptDetails.Add(NewItem);
+            ReceiptDetails.Add(NewItem);
             parentGoodsReceipt.ReceiptDetails.Add(NewItem);
             goodsReceiptVM.UpdateItem(parentGoodsReceipt);
 
@@ -184,7 +192,7 @@ namespace NewSalesProject.Views
         {
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
-            DataAccess.ReceiptDetails.Remove(SelectedItem);
+            ReceiptDetails.Remove(SelectedItem);
             parentGoodsReceipt.ReceiptDetails.Remove(SelectedItem);
             SelectedItem = null;
             ReFocusRow(DataAccess.ProductPrices.Count);
@@ -195,7 +203,7 @@ namespace NewSalesProject.Views
         {
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
-            DataAccess.ReceiptDetails.Clear();
+            ReceiptDetails.Clear();
             parentGoodsReceipt.ReceiptDetails.Clear();
             SelectedItem = null;
             CRUDState = CRUDCardState.Default;

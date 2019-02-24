@@ -17,6 +17,7 @@ namespace NewSalesProject.Views
         {
             Name = "Good Receipts";
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.GoodsReceipts);
+            DtGridProperties = (string)Properties.Settings.Default["GoodsReceiptDtGridProperties"];
             ReceiptDetailVM = new ReceiptDetailViewModel(this);
         }
 
@@ -31,6 +32,20 @@ namespace NewSalesProject.Views
             {
                 receiptDetailVM = value;
                 OnPropertyChanged("ReceiptDetailVM");
+            }
+        }
+
+        protected ReceiptDetailViewModel newReceiptDetailVM;
+        public ReceiptDetailViewModel NewReceiptDetailVM
+        {
+            get
+            {
+                return newReceiptDetailVM;
+            }
+            set
+            {
+                newReceiptDetailVM = value;
+                OnPropertyChanged("NewReceiptDetailVM");
             }
         }
 
@@ -49,6 +64,16 @@ namespace NewSalesProject.Views
         }
 
         //private ProductViewModel productViewModel;
+
+        protected async override void GetData()
+        {
+            DataGridSpinnerState = SpinnerState.Loading;
+            DataGridState = ViewModeType.Busy;
+            await Task.Delay(150);
+            ClearFilter();
+            await DataAccess.GetAllGoodsReceipts();
+            DataGridState = ViewModeType.Default;
+        }
 
         protected override void CreateNew()
         {
@@ -91,8 +116,10 @@ namespace NewSalesProject.Views
         {
             CRUDType = CRUDType.Adding;
             CRUDState = CRUDCardState.Busy;
-            //await DataAccess.AddProductPrice(NewItem);
+            await Task.Delay(500);
+            await DataAccess.AddGoodsReceipt(NewItem);
             SelectedItem = NewItem;
+            CreateNew();
             CRUDState = CRUDCardState.Default;
         }
 

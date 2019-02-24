@@ -59,6 +59,18 @@ namespace NewSalesProject.Model
             }
         }
 
+        private Decimal exchangePrice;
+        [NotMapped]
+        public Decimal ExchangePrice
+        {
+            get { return exchangePrice; }
+            set
+            {
+                exchangePrice = value;
+                OnPropertyChanged("ExchangePrice");
+            }
+        }
+
         private Decimal tax;
         [NotMapped]
         public Decimal Tax

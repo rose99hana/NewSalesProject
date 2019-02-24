@@ -115,7 +115,7 @@
                         <Setter Property="ContentControl.IsEnabled" Value="True"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding ElementName=ReceiptsListButton1, Path=IsChecked}" Value="True">
+                    <DataTrigger Binding="{Binding ElementName=WishListButton1, Path=IsChecked}" Value="True">
                         <Setter Property="ContentControl.IsEnabled" Value="True"/>
                     </DataTrigger>
 
@@ -132,7 +132,7 @@
                         <Setter Property="ContentControl.IsEnabled" Value="True"/>
                     </DataTrigger>
                     
-                    <DataTrigger Binding="{Binding ElementName=ReceiptsListButton2, Path=IsChecked}" Value="True">
+                    <DataTrigger Binding="{Binding ElementName=WishListButton2, Path=IsChecked}" Value="True">
                         <Setter Property="ContentControl.IsEnabled" Value="True"/>
                     </DataTrigger>
                 </Style.Triggers>

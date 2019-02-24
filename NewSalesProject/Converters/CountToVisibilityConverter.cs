@@ -9,16 +9,15 @@ using System.Windows.Data;
 
 namespace NewSalesProject.Converters
 {
-    public class VisibilityToBooleanConverter : IValueConverter
+    public class CountToVisibilityConverter : IValueConverter
     {
-        public static readonly VisibilityToBooleanConverter Instance = new VisibilityToBooleanConverter();
+        public static readonly CountToVisibilityConverter Instance = new CountToVisibilityConverter();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if((Visibility)value == Visibility.Visible)
-                return true;
-            return false;
-
+            if (value.ToString() == "0")
+                return Visibility.Collapsed;
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

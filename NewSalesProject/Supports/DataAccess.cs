@@ -27,6 +27,8 @@ namespace NewSalesProject.Supports
         public static ObservableCollection<ProductPrice> ProductPrices { get; set; } = new ObservableCollection<ProductPrice>();
         public static ObservableCollection<ReceiptDetail> ReceiptDetails { get; set; } = new ObservableCollection<ReceiptDetail>();
         public static ObservableCollection<GoodsReceipt> GoodsReceipts { get; set; } = new ObservableCollection<GoodsReceipt>();
+        public static ObservableCollection<WishList> WishLists { get; set; } = new ObservableCollection<WishList>();
+        public static ObservableCollection<WishListDetail> WishListDetails { get; set; } = new ObservableCollection<WishListDetail>();
 
         public static ObservableCollection<Asset> Assets { get; set; } = new ObservableCollection<Asset>();
         public static ObservableCollection<AssetCategory> AssetCategories { get; set; } = new ObservableCollection<AssetCategory>();
@@ -353,6 +355,7 @@ namespace NewSalesProject.Supports
             Categories.Clear();
             ProductPrices.Clear();
             Stores.Clear();
+            GoodsReceipts.Clear();
             using (var db = new SalesContext())
             {
                 try
@@ -361,6 +364,7 @@ namespace NewSalesProject.Supports
                     var result1 = await (from c in db.Categories.Include("Products") select c).ToListAsync();
                     var result2 = await (from c in db.ProductPrices select c).Include("Product").Include("Store").ToListAsync();
                     var result3 = await (from c in db.Stores select c).Include("ProductPrices").ToListAsync();
+                    var result4 = await (from c in db.GoodsReceipts select c).Include("ReceiptDetails").Include("Store").ToListAsync();
                     foreach (Product item in result)
                     {
                         Products.Add(item);
@@ -376,6 +380,10 @@ namespace NewSalesProject.Supports
                     foreach (Store item in result3)
                     {
                         Stores.Add(item);
+                    }
+                    foreach (GoodsReceipt item in result4)
+                    {
+                        GoodsReceipts.Add(item);
                     }
                 }
                 catch(Exception e)
@@ -713,9 +721,17 @@ namespace NewSalesProject.Supports
                 if (itemPara.Store != null)
                 {
                     itemPara.StoreID = itemPara.Store.Id;
-                    db.Entry(itemPara).State = EntityState.Unchanged;
+                    db.Entry(itemPara.Store).State = EntityState.Unchanged;
+                }
+                foreach(ReceiptDetail rd in itemPara.ReceiptDetails)
+                {
+                    rd.ProductID = rd.Product.Id;
+                    db.Entry(rd.Product).State = EntityState.Unchanged;
+                    //db.ReceiptDetails.Add(rd);
                 }
                 db.GoodsReceipts.Add(itemPara);
+                await UpdateDatabase(db);
+                CodeGenerate(itemPara);
                 await UpdateDatabase(db);
                 GoodsReceipts.Add(itemPara);
             }
@@ -781,6 +797,16 @@ namespace NewSalesProject.Supports
             var x = numId.ToString("D5");
             var y = x.Count();
             model.Code = "PDP" + x.Substring(y - 5, 5) + rnd.Next(0, 10);
+        }
+
+        internal static void CodeGenerate(GoodsReceipt model)
+        {
+            int numId = 0;
+            numId = model.Id;
+            Random rnd = new Random();
+            var x = numId.ToString("D5");
+            var y = x.Count();
+            model.InvoiceCode = "IVC" + x.Substring(y - 5, 5) + rnd.Next(0, 10);
         }
 
 

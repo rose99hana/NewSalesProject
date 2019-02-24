@@ -42,6 +42,7 @@ namespace NewSalesProject.Controls
         DataGridColumn lastColumn;
         double totalWidthOfColumnsDtGrid;
         Dictionary<string, string> columnDictionary = new Dictionary<string, string>();
+
         public ObservableCollection<DataGridColumnPropertyItem> ButtonMenuContentItemList { get; set; } = new ObservableCollection<DataGridColumnPropertyItem>();
         public ObservableCollection<DataGridColumnPropertyItem> SearchPropertyItemList { get; set; } = new ObservableCollection<DataGridColumnPropertyItem>();
 
@@ -377,8 +378,42 @@ namespace NewSalesProject.Controls
         {
             ButtonMenuContentItemList.Clear();
             SearchPropertyItemList.Clear();
-            var context = (DataContext as ICRUDViewModel);
+            ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Deselect All", IsChecked = true });
 
+            foreach (DataGridColumn d in DtGrid.Columns)
+            {
+                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = d.Header.ToString(), IsChecked = true });
+                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = d.Header.ToString(), IsChecked = true });
+            }
+
+
+            if (DtGrid.DataContext is CustomerViewModel)
+            {
+                AddNewColumnToDataGrid("Customer Rank", "CustomerRank.Name");
+
+                SearchPropertyItemList.RemoveAt(4); //Remove address1
+                SearchPropertyItemList.RemoveAt(4); //Remove address2
+                SearchPropertyItemList.Insert(4, new DataGridColumnPropertyItem { HeaderName = "Address" });
+            }
+
+            if (DtGrid.DataContext is CustomerRankViewModel)
+            {
+                AddNewColumnToDataGrid("Number of Customers", "Customers.Count");
+            }
+
+            if (DtGrid.DataContext is CategoryViewModel)
+            {
+                AddNewColumnToDataGrid("Number of Products", "Products.Count");
+            }
+
+            if (DtGrid.DataContext is ProductViewModel)
+            {
+                AddNewColumnToDataGrid("ProductPrices", "ProductPrices.Count");
+                AddNewColumnToDataGrid("ReceiptDetails", "ReceiptDetails.Count"); 
+                AddNewColumnToDataGrid("OrderDetails", "OrderDetails.Count");
+            }
+
+            var context = (DataContext as ICRUDViewModel);
             if (context.DtGridProperties == "Default")
             {
                 context.DtGridProperties = "";
@@ -386,83 +421,14 @@ namespace NewSalesProject.Controls
                 {
                     context.DtGridProperties += item.Header + "=true;";
                 }
-
-                if (DtGrid.DataContext is CustomerViewModel)
-                    context.DtGridProperties += "Customer Rank=true;";
-                if (DtGrid.DataContext is CustomerRankViewModel)
-                    context.DtGridProperties += "Number of Customers=true;";
             }
+        }
 
-            ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Deselect All", IsChecked = true });
-            foreach (DataGridColumn d in DtGrid.Columns)
-            {
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = d.Header.ToString(), IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = d.Header.ToString(), IsChecked = true });
-
-            }
-
-
-            if (DtGrid.DataContext is CustomerViewModel)
-            {
-                var col = new DataGridTextColumn();
-                col.Header = "Customer Rank";
-                col.Binding = new Binding("CustomerRank.Name");
-                DtGrid.Columns.Add(col);
-
-                var col2 = new DataGridTextColumn();
-                col2.Header = "CustomerRankID";
-                col2.Binding = new Binding("CustomerRankID");
-                DtGrid.Columns.Add(col2);
-
-                var col1 = new DataGridTextColumn();
-                col1.Header = "Rank ID";
-                col1.Binding = new Binding("CustomerRank.Id");
-                DtGrid.Columns.Add(col1);
-
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Customer Rank", IsChecked = true });
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Rank ID", IsChecked = true });
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "CustomerRankID", IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Customer Rank", IsChecked = true });
-
-                SearchPropertyItemList.RemoveAt(4); //Remove address1
-                SearchPropertyItemList.RemoveAt(4); //Remove address2
-                SearchPropertyItemList.Insert(4, new DataGridColumnPropertyItem { HeaderName = "Address" });
-            }
-            
-            if(DtGrid.DataContext is CustomerRankViewModel)
-            {
-                var col = new DataGridTextColumn();
-                col.Header = "Number of Customers";
-                col.Binding = new Binding("Customers.Count");
-                DtGrid.Columns.Add(col);
-
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Number of Customers", IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = "Number of Customers", IsChecked = true });
-            }
-
-            if (DtGrid.DataContext is AssetViewModel)
-            {
-                var col = new DataGridTextColumn();
-                col.Header = "責任部門";
-                col.Binding = new Binding("Department.Name");
-                DtGrid.Columns.Add(col);
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "責任部門", IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = "責任部門", IsChecked = true });
-
-                var col1 = new DataGridTextColumn();
-                col1.Header = "設置場所";
-                col1.Binding = new Binding("InstallationLocation.Name");
-                DtGrid.Columns.Add(col1);
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "設置場所", IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = "設置場所", IsChecked = true });
-
-                var col2 = new DataGridTextColumn();
-                col2.Header = "カテゴリ";
-                col2.Binding = new Binding("AssetCategory.Name");
-                DtGrid.Columns.Add(col2);
-                ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = "カテゴリ", IsChecked = true });
-                SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = "カテゴリ", IsChecked = true });
-            }
+        private void AddNewColumnToDataGrid(string headerName, string bindingProperty)
+        {
+            DtGrid.Columns.Add(new DataGridTextColumn { Header = headerName, Binding = new Binding(bindingProperty) });
+            ButtonMenuContentItemList.Add(new DataGridColumnPropertyItem { HeaderName = headerName, IsChecked = true });
+            SearchPropertyItemList.Add(new DataGridColumnPropertyItem { HeaderName = headerName, IsChecked = true });
         }
 
         private void SearchPropertyCbb_Loaded(object sender, RoutedEventArgs e)
