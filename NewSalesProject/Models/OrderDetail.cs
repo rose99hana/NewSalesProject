@@ -24,8 +24,8 @@ namespace NewSalesProject.Model
         public string SaleInputCurrency { get; set; }
         public bool IsNotUseStock { get; set; } = false;
 
-        public int OrderID { get; set; }
-        public int ProductID { get; set; }
+        public int? OrderID { get; set; }
+        public int? ProductID { get; set; }
         public int? ReceiptDetailID { get; set; }
 
         [ForeignKey("OrderID")]

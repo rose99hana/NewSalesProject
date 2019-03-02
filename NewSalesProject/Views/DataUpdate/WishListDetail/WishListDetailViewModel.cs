@@ -183,9 +183,8 @@ namespace NewSalesProject.Views
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
             DataAccess.WishListDetails.Remove(SelectedItem);
-            parentWishList.WishListDetails.Remove(SelectedItem);
+            //parentWishList.WishListDetails.Remove(SelectedItem);
             SelectedItem = null;
-            ReFocusRow(DataAccess.ProductPrices.Count);
             CRUDState = CRUDCardState.Default;
         }
 

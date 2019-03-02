@@ -18,6 +18,7 @@ namespace NewSalesProject.Views
     public class NewView : UserControl
     {
         public Button CancelButton;
+        public string Alas { get; set; } = "New";
 
         static NewView()
         {

@@ -341,17 +341,26 @@
 
                     <DockPanel Margin="4">
                         <Separator Margin="4" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"/>
-                        <TextBlock Margin="4 0" FontWeight="SemiBold" FontFamily="Cambria" Width="130" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Text="Add this Product with above Price to Wish List"/>
+                        <TextBlock Margin="4 0" FontWeight="SemiBold" FontFamily="Cambria" Width="140" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" Text="Add this Product with above Price to Wish List"/>
 
                         <DockPanel>
                             <TextBlock Margin="10 2 2 2" Text="Quantity" VerticalAlignment="Center"/>
-                            <wpfTool:IntegerUpDown Name="QuantityTextbox" Margin="2 0" MinWidth="70" Minimum="1" VerticalAlignment="Center"/>
+                            <wpfTool:IntegerUpDown Name="QuantityTextbox" Text="{Binding Qty}" Margin="2 0" MinWidth="70" Minimum="1" Maximum="1000" VerticalAlignment="Center"/>
                         </DockPanel>
 
                         <Button Command="{Binding AddProductPriceToWishListCommand}" 
-                                CommandParameter="{Binding ElementName=QuantityTextbox, Path=Text}" 
-                                Background="#ffe6cc" Margin="20 2 4 2" Style="{StaticResource ImageButton}">
+                                CommandParameter="{Binding Qty}" 
+                                Background="#ffe6cc" Margin="20 2 4 2">
                             <Image Source="/NewSalesProject;component/Images/AddPrice.ico"/>
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ImageButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=QuantityTextbox}" Value="">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                         </Button>
 
                         <Separator Margin="4" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Width="2"/>

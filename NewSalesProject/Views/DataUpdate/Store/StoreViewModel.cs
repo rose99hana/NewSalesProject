@@ -1,4 +1,5 @@
-﻿using NewSalesProject.Enum;
+﻿using Microsoft.Win32;
+using NewSalesProject.Enum;
 using NewSalesProject.Interfaces;
 using NewSalesProject.Model;
 using NewSalesProject.Supports;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace NewSalesProject.Views
 {
@@ -107,6 +110,52 @@ namespace NewSalesProject.Views
             SelectedItem = null;
             ReFocusRow(DataAccess.Stores.Count);
             CRUDState = CRUDCardState.Default;
+        }
+
+
+
+        public ICommand UpdateImageCommand
+        {
+            get { return new RelayCommand((p) => DetermineDialogPara(p)); }
+        }
+
+        public ICommand DeleteImageCommand
+        {
+            get { return new RelayCommand((p) => DetermineDialogPara(p)); }
+        }
+
+        private void DetermineDialogPara(object p)
+        {
+            switch (p as string)
+            {
+                case "New":
+                    OpenImageDialog(NewItem);
+                    break;
+                case "Detail":
+                    OpenImageDialog(InEditItem);
+                    break;
+            }
+        }
+
+        private void OpenImageDialog(Store itemPara)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Title = "Select a picture";
+            dialog.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+
+            if (dialog.ShowDialog() == true)
+            {
+                itemPara.Logo = DataAccess.ImageToBytes(new BitmapImage(new Uri(dialog.FileName)));
+                itemPara.RaisePropertyChanged("Logo");
+            }
+        }
+
+        private void DeleteDisplayImage(Store itemPara)
+        {
+            itemPara.Logo = DataAccess.ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/NoImage.jpeg")));
+            itemPara.RaisePropertyChanged("Logo");
         }
 
         #region Filter Store

@@ -18,8 +18,8 @@ namespace NewSalesProject.Model
 
         public int Id { get; set; }
         public string Code { get; set; }
-        public int ProductID { get; set; }
-        public int StoreID { get; set; }
+        public int? ProductID { get; set; }
+        public int? StoreID { get; set; }
         public Decimal Price { get; set; }
         public Decimal Discount { get; set; }
         public Decimal Coupon { get; set; }

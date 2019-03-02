@@ -51,7 +51,7 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="10 0 0 0">
                     <TextBlock Text="NetWeight" FontWeight="Bold" Foreground="Gray"/>
-                    <TextBox Text="{Binding BindingItem.NetWeight, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                    <TextBox GotFocus="TextBox_GotFocus" Text="{Binding BindingItem.NetWeight, StringFormat={}{0:N0} gram, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
                 </StackPanel>
             </Grid>
             <Grid Margin="0 10">
@@ -61,7 +61,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Margin="0 0 10 0">
                     <TextBlock Text="Product Code"  FontWeight="Bold" Foreground="Gray"/>
-                    <TextBox Text="{Binding BindingItem.Code, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
+                    <TextBox IsReadOnly="true" Text="{Binding BindingItem.Code, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Margin="10 0 0 0">
                     <TextBlock Text="Category" FontWeight="Bold" Foreground="Gray"/>
@@ -183,10 +183,12 @@
                             </Style>
                         </DockPanel.Style>
                         <StackPanel Margin="2 4" DockPanel.Dock="Top" Orientation="Horizontal">
-                            <TextBlock Text="Product Decription" Foreground="Orange" FontWeight="Bold"/>
+                            <TextBlock Text="Product Description" Foreground="Orange" FontWeight="Bold"/>
                         </StackPanel>
 
-                        <RichTextBox IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" Padding="4" Margin="2"/>
+                        <TextBox Padding="4" Margin="2" AcceptsReturn="True" AcceptsTab="True" Style="{StaticResource DefaultTextBox}" 
+                                 Text="{Binding BindingItem.Description, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                                 IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"/>
 
                     </DockPanel>
                 </Grid>
@@ -223,8 +225,12 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Content="Change"/>
-                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Grid.Column="1" Content="Delete"/>
+                <Button Command="{Binding UpdateImageCommand}"
+                        CommandParameter="{Binding Alas, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                    IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Content="Change"/>
+                <Button Command="{Binding DeleteImageCommand}"
+                        CommandParameter="{Binding Alas, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                    IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Grid.Column="1" Content="Delete"/>
             </Grid>
         </Grid>
     </Grid>

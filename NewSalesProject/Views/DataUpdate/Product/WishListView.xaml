@@ -267,7 +267,7 @@
 
                         <StackPanel Grid.Row="1" Margin="10 2 2 2">
                             <TextBlock Text="Wish List Title" Foreground="DimGray" TextDecorations="Underline" FontSize="13" FontWeight="DemiBold"/>
-                            <TextBox Text="" Margin="0 2 0 0" BorderBrush="LightSkyBlue"/>
+                            <TextBox Background="#fff2e6" BorderBrush="#ffa64d" Text="" Margin="0 2 0 0"/>
                         </StackPanel>
 
 
@@ -411,6 +411,7 @@
                               AutoGenerateColumns="False"
                               LoadingRow="WishListDtGrid_LoadingRow"
                               ItemsSource="{Binding ViewItems}"
+                              SelectedItem="{Binding SelectedItem}"
                               SelectionChanged="WishListDtGrid_SelectionChanged"
                               ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                               CellStyle="{DynamicResource DataGridCellStyle1}" 
@@ -431,7 +432,7 @@
                                                 <Border Height="50" Width="50">
                                                     <Image Source="{Binding ProductPrice.Product.Picture}"/>
                                                 </Border>
-                                                <TextBlock Foreground="#4d4d4d" FontFamily="Century Gothic" Text="{Binding ProductPrice.Product.Name}" Margin="6 0" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                                <TextBlock Foreground="#4d4d4d" FontFamily="Century Gothic" Text="{Binding ProductPrice.Product.OriginalName}" Margin="6 0" TextWrapping="Wrap" VerticalAlignment="Center"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

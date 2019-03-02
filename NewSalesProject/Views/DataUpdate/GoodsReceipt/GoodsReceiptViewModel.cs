@@ -110,6 +110,7 @@ namespace NewSalesProject.Views
             item.RaisePropertyChanged("ShippingFee");
             item.RaisePropertyChanged("AdditionalFees");
             item.RaisePropertyChanged("CurrencySymbol");
+            item.RaisePropertyChanged("Total");
         }
 
         protected async override void Add()
@@ -117,6 +118,26 @@ namespace NewSalesProject.Views
             CRUDType = CRUDType.Adding;
             CRUDState = CRUDCardState.Busy;
             await Task.Delay(500);
+            foreach(ReceiptDetail item in NewItem.ReceiptDetails)
+            {
+                if(item.AddNewToPriceList == true)
+                {
+                    ProductPrice pr = new ProductPrice
+                    {
+                        CurrencySymbol = item.CurrencySymbol,
+                        Discount = item.Discount,
+                        Coupon = item.Coupon,
+                        Price = item.Price,
+                        IsTaxIncluding = item.IsTaxIncluding,
+                        Product = item.Product,
+                        ProductID = item.ProductID,
+                        Store = NewItem.Store,
+                        StoreID = NewItem.StoreID,
+                    };
+
+                    await DataAccess.AddProductPrice(pr);
+                }
+            }
             await DataAccess.AddGoodsReceipt(NewItem);
             SelectedItem = NewItem;
             CreateNew();

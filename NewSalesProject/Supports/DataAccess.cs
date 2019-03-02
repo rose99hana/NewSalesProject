@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace NewSalesProject.Supports
 {
@@ -309,6 +311,7 @@ namespace NewSalesProject.Supports
                 var query = db.Stores.Find(itemPara.Id);
                 CopyProperties(typeof(Store), query, itemPara);
                 db.Entry(query).State = EntityState.Modified;
+                db.SaveChanges();
                 await UpdateDatabase(db);
             }
         }
@@ -425,6 +428,8 @@ namespace NewSalesProject.Supports
                     db.Entry(itemPara).State = EntityState.Unchanged;   //Prevent conflick key orcur in entity, REQUIRED
                 }
                 db.Products.Add(itemPara);
+                await UpdateDatabase(db);
+                CodeGenerate(itemPara);
                 await UpdateDatabase(db);
                 Products.Add(itemPara);
             }
@@ -809,8 +814,29 @@ namespace NewSalesProject.Supports
             model.InvoiceCode = "IVC" + x.Substring(y - 5, 5) + rnd.Next(0, 10);
         }
 
+        internal static void CodeGenerate(Product model)
+        {
+            int numId = 0;
+            numId = model.Id;
+            Random rnd = new Random();
+            var x = numId.ToString("D5");
+            var y = x.Count();
+            model.Code = "PRD" + x.Substring(y - 5, 5) + rnd.Next(0, 10);
+        }
 
 
+        public static byte[] ImageToBytes(BitmapImage img)
+        {
+            byte[] data;
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(img));
+            using (MemoryStream ms = new MemoryStream())
+            {
+                encoder.Save(ms);
+                data = ms.ToArray();
+            }
+            return data;
+        }
 
 
 

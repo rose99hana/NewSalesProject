@@ -17,10 +17,10 @@ namespace NewSalesProject.Model
         {
             var Categories = new List<Category>
             {
-                new Category{Name="Nuoc hoa"},
-                new Category{Name="My pham"},
-                new Category{Name="Son"},
-                new Category{Name="Quan ao"},
+                new Category{Name="日用品"},
+                new Category{Name="医薬品"},
+                new Category{Name="衛生用品"},
+                new Category{Name="化粧品"},
             };
             Categories.ForEach(p => db.Categories.Add(p));
 
@@ -46,8 +46,9 @@ namespace NewSalesProject.Model
 
             var Stores = new List<Store>
             {
-                new Store{ Name="Amazon.co.jp", Address="Amazon.co.jp", Logo = ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/AmazonLogo.jpeg"))) },
-                new Store{ Name="Matsumoto kiyoshi", Address="Akabane", Logo = ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/MatsumotoLogo.jpg"))) },
+                new Store{ Name="Amazon.co.jp 公式サイト", Address="https://www.amazon.co.jp/", Logo = ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/AmazonLogo.jpeg"))) },
+                new Store{ Name="マツモトキヨシ赤羽すずらんストリート店", Address="〒115-0045 東京都北区赤羽2-13-3 サトウビル1F", Logo = ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/MatsumotoLogo.jpg"))) },
+                new Store{ Name="楽天と西友のネットスーパー", Address="https://sm.rakuten.co.jp/", Logo = ImageToBytes(new BitmapImage(new Uri($"pack://application:,,,/Images/seiyu.png"))) },
             };
             Stores.ForEach(p => db.Stores.Add(p));
 

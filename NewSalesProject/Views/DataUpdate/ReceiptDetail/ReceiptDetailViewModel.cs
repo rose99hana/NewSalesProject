@@ -139,7 +139,7 @@ namespace NewSalesProject.Views
         {
             CRUDType = CRUDType.Adding;
             CRUDState = CRUDCardState.Busy;
-            await Task.Delay(150);
+            await Task.Delay(300);
             NewItem.Product = selectedProduct;
             CaculateValue(NewItem);
             ReceiptDetails.Add(NewItem);
@@ -177,10 +177,11 @@ namespace NewSalesProject.Views
             }
         }
 
-        protected override void Save()
+        protected async override void Save()
         {
             CRUDType = CRUDType.Saving;
             CRUDState = CRUDCardState.Busy;
+            await Task.Delay(300);
             SelectedItem.IsEditable = false;
             UpdateItem(SelectedItem);
             goodsReceiptVM.UpdateItem(parentGoodsReceipt);
@@ -188,10 +189,11 @@ namespace NewSalesProject.Views
         }
 
 
-        protected override void Delete()
+        protected async override void Delete()
         {
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
+            await Task.Delay(300);
             ReceiptDetails.Remove(SelectedItem);
             parentGoodsReceipt.ReceiptDetails.Remove(SelectedItem);
             SelectedItem = null;
@@ -199,10 +201,11 @@ namespace NewSalesProject.Views
             CRUDState = CRUDCardState.Default;
         }
 
-        protected override void DeleteAll()
+        protected async override void DeleteAll()
         {
             CRUDType = CRUDType.Deleting;
             CRUDState = CRUDCardState.Busy;
+            await Task.Delay(300);
             ReceiptDetails.Clear();
             parentGoodsReceipt.ReceiptDetails.Clear();
             SelectedItem = null;

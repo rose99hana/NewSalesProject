@@ -23,8 +23,11 @@ namespace NewSalesProject.Model
         public int Id { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
+        [Browsable(false)]
         public Decimal TaxRate { get; set; }
+        [Browsable(false)]
         public string CurrencySymbol { get; set; }
+        [Browsable(false)]
         public byte[] Logo { get; set; }
 
         [Browsable(false)]

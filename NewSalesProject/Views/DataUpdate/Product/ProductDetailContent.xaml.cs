@@ -34,5 +34,12 @@ namespace NewSalesProject.Views
             }
 
         }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var temp = sender as TextBox;
+            temp.Text = temp.Text.Replace(" gram", "");
+            temp.SelectAll();
+        }
     }
 }

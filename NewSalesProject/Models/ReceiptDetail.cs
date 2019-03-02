@@ -29,8 +29,8 @@ namespace NewSalesProject.Model
         public bool IsSoldOut { get; set; } = false;
         public int SoldQty { get; set; }
 
-        public int ProductID { get; set; }
-        public int GoodsReceiptID { get; set; }
+        public int? ProductID { get; set; }
+        public int? GoodsReceiptID { get; set; }
 
         [ForeignKey("ProductID")]
         public virtual Product Product { get; set; }

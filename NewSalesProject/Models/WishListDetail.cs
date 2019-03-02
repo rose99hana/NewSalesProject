@@ -14,7 +14,7 @@ namespace NewSalesProject.Model
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public int ProductPriceID { get; set; }
+        public int? ProductPriceID { get; set; }
 
         [ForeignKey("ProductPriceID")]
         public virtual ProductPrice ProductPrice { get; set; }

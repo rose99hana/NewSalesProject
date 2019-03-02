@@ -26,6 +26,7 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type views:ProductViewModel}">
             <ContentControl Content="{Binding Source={StaticResource ViewLocator}, Path=ProductView}" />
+            <!--<views:ProductView/>-->
         </DataTemplate>
         <DataTemplate DataType="{x:Type views:GoodsReceiptViewModel}">
             <views:GoodsReceiptView/>

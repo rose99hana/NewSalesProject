@@ -85,8 +85,12 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Content="Change"/>
-                <Button IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Grid.Column="1" Content="Delete"/>
+                <Button Command="{Binding UpdateImageCommand}"
+                        CommandParameter="{Binding Alas, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"
+                    IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Content="Change"/>
+                <Button Command="{Binding DeleteImageCommand}"
+                        CommandParameter="{Binding Alas, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}"                        
+                    IsEnabled="{Binding IsControlsEnable, RelativeSource={RelativeSource AncestorLevel=2, AncestorType={x:Type UserControl}}}" materialDesign:ShadowAssist.ShadowDepth="Depth1" Margin="2" Height="auto" Grid.Column="1" Content="Delete"/>
             </Grid>
         </Grid>
     </Grid>

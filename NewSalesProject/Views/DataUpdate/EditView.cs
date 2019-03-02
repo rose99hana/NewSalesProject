@@ -20,6 +20,7 @@ namespace NewSalesProject.Views
         public Button EditButton;
         public Button CancelButton;
         public Button SaveButton;
+        public string Alas { get; set; } = "Detail";
 
         static EditView()
         {

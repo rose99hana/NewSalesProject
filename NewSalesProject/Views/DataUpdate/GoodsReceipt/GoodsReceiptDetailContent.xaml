@@ -256,7 +256,7 @@
                             </Grid.ColumnDefinitions>
                             <DockPanel Margin="10 2">
                                 <TextBlock Text="Receipt Code"/>
-                                <TextBox IsEnabled="False" Text="{Binding BindingItem.InvoiceCode}"/>
+                                <TextBox IsReadOnly="True" Text="{Binding BindingItem.InvoiceCode}"/>
                             </DockPanel>
 
                             <DockPanel Grid.Column="1" Margin="10 2">

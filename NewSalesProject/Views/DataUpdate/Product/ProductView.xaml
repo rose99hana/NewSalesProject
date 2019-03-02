@@ -43,7 +43,7 @@
 
             <DockPanel Grid.Column="2" Margin="2">
                 <Grid DockPanel.Dock="Top">
-                    <controls:DetailsHeaderBar x:Name="HeaderBar" HeaderText="Selected Product: " Text="{Binding InEditItem.Name}"/>
+                    <controls:DetailsHeaderBar x:Name="HeaderBar" HeaderText="Selected Product: " Text="{Binding InEditItem.OriginalName}"/>
                 </Grid>
 
                 <Separator DockPanel.Dock="Top"/>

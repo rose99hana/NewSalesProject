@@ -15,7 +15,7 @@ namespace NewSalesProject.Views
     {
         public WishListViewModel()
         {
-            Name = "Good Receipts";
+            Name = "WishLists";
             ViewItems = CollectionViewSource.GetDefaultView(DataAccess.WishLists);
             WishListDetailVM = new WishListDetailViewModel(this);
         }

@@ -280,6 +280,12 @@ namespace NewSalesProject.Controls
 
         #region Events
 
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AddButton.IsEnabled == false)
+                AddButton.IsEnabled = true;
+        }
+
         private void Option_Click(object sender, RoutedEventArgs e)
         {
             var mouseRightClickEvent = new MouseButtonEventArgs(Mouse.PrimaryDevice, Environment.TickCount, MouseButton.Right)
@@ -408,9 +414,13 @@ namespace NewSalesProject.Controls
 
             if (DtGrid.DataContext is ProductViewModel)
             {
-                AddNewColumnToDataGrid("ProductPrices", "ProductPrices.Count");
-                AddNewColumnToDataGrid("ReceiptDetails", "ReceiptDetails.Count"); 
-                AddNewColumnToDataGrid("OrderDetails", "OrderDetails.Count");
+                AddNewColumnToDataGrid("Category", "Category.Name");
+            }
+
+            if (DtGrid.DataContext is GoodsReceiptViewModel)
+            {
+                AddNewColumnToDataGrid("Items Count", "ReceiptDetails.Count");
+                AddNewColumnToDataGrid("Purchased In Store", "Store.Name");
             }
 
             var context = (DataContext as ICRUDViewModel);

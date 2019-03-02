@@ -15,6 +15,7 @@ namespace NewSalesProject.Model
         {
             OrderDetails = new HashSet<OrderDetail>();
             ProductPrices = new HashSet<ProductPrice>();
+            OriginalName = "";
         }
 
         public int Id { get; set; }
@@ -23,6 +24,8 @@ namespace NewSalesProject.Model
         public string Name { get; set; }
         public string Size { get; set; }
         public int NetWeight { get; set; }
+        [Browsable(false)]
+        public string Description { get; set; }
         [Browsable(false)]
         public byte[] Picture { get; set; }
 
