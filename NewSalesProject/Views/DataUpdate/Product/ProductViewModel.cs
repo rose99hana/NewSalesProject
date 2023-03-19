@@ -95,7 +95,7 @@ namespace NewSalesProject.Views
                 InEditItem = SelectedItem;
                 try
                 {
-                    if (selectedItem.Id != selectedItemBeforeChange.Id)
+                    if (selectedItemBeforeChange!= null && selectedItem != null && selectedItem.Id != selectedItemBeforeChange.Id)
                         ProductPriceVM.GetPricesOfProduct(selectedItem);
                 }
                 catch

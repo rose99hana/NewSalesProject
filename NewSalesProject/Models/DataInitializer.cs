@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 
 namespace NewSalesProject.Model
 {
-    public partial class DataInitializer : DropCreateDatabaseIfModelChanges<SalesContext>
+    public partial class DataInitializer : DropCreateDatabaseAlways<SalesContext>
     {
         protected override void Seed(SalesContext db)
         {
